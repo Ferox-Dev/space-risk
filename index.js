@@ -1,4 +1,5 @@
 //This contains the runtime information + functions + methods
-import {hello} from './TroopCalculator.js'
+import {pointcalc} from './pointcalc.js';
 
-hello()
+ 
+console.log(pointcalc(2,10,3,1));
