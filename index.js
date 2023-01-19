@@ -1,5 +1,6 @@
 //This contains the runtime information + functions + methods
 import troopCalculate from './TroopCalculator.js';
+import planetPick from './planetSelect.js';
 import {pointcalc} from './pointcalc.js';
 import {battle} from './battlecalculation.js';
 
@@ -12,6 +13,8 @@ let Player2 = {
     territories: 0,
     troops: 40
 }
+
+let currentPlayer = Player1;
 
 let system1 = [
     {
@@ -160,6 +163,12 @@ let system6 = [
         value: 5
     },
 ];
+
+function clicked(planet) {
+    planetPick(planet, currentPlayer);
+}
+
+
 
 let playerTroops = 30;
 let territories = 18;
