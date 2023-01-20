@@ -1,5 +1,7 @@
 //This contains the runtime information + functions + methods
 import troopCalculate from './TroopCalculator.js';
+import start from './start.js';
+import planetPick from './planetSelect.js';
 import {pointcalc} from './pointcalc.js';
 import {battle} from './battlecalculation.js';
 
@@ -19,27 +21,27 @@ let system1 = [
     {
         planet: "sun",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "venus",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "earth",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "saturn",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "jupiter",
         claimed: "",
-        value: 5
+        troopcount: 0
     }
 ];
 
@@ -47,27 +49,27 @@ let system2 = [
     {
         planet: "sunner",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "penutt",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "chese",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "kyoob",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "tulia",
         claimed: "",
-        value: 5
+        troopcount: 0
     }
 ];
 
@@ -75,22 +77,22 @@ let system3 = [
     {
         planet: "banasun",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "george",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "lennie",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "nrutas",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
 ];
 
@@ -98,22 +100,22 @@ let system4 = [
     {
         planet: "lun",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "haf",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "fotbal",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "apolle",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
 ];
 
@@ -121,22 +123,22 @@ let system5 = [
     {
         planet: "smun",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "pairr",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "cooki",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "isars",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
 ];
 
@@ -144,24 +146,48 @@ let system6 = [
     {
         planet: "potunto",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "eg",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "enolla",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
     {
         planet: "vabos",
         claimed: "",
-        value: 5
+        troopcount: 0
     },
 ];
+
+let systems = [system1, system2, system3, system4, system5, system6];
+
+function planetNames(arrays, name) {
+
+    let planetArray = [];
+    arrays.forEach(array => {
+        arrays.forEach(object => {
+            planetArray.push(object[name]);
+        })
+    });
+    return planetArray;
+}
+
+let planets = planetNames([system1, system2, system3, system4, system5, system6], "planet");
+
+console.log(planets);
+
+
+start(planets);
+
+function clicked(planet) {
+    
+}
 
 let playerTroops = 30;
 let territories = 18;
