@@ -5,7 +5,7 @@ import planetPick from './planetSelect.js';
 import {pointcalc} from './pointcalc.js';
 import {battle} from './battlecalculation.js';
 
-turn
+let turn = 0;
 
 let Player1 = {
     territories: 0,
@@ -165,20 +165,24 @@ let system6 = [
     },
 ];
 
-let systems = [system1, system2, system3, system4, system5, system6];
 
-function planetNames(arrays, name) {
+
+function planetNames(name) {
+    let systems = [system1, system2, system3, system4, system5, system6];
+
+    for(i > )
+    systems[i]
 
     let planetArray = [];
-    arrays.forEach(array => {
-        arrays.forEach(object => {
+    systems[1].forEach(array => {
+        systems[1].forEach(object => {
             planetArray.push(object[name]);
         })
     });
     return planetArray;
 }
 
-let planets = planetNames([system1, system2, system3, system4, system5, system6], "planet");
+let planets = planetNames("planet");
 
 console.log(planets);
 
