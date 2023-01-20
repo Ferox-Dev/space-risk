@@ -3,6 +3,8 @@ import troopCalculate from './TroopCalculator.js';
 import {pointcalc} from './pointcalc.js';
 import {battle} from './battlecalculation.js';
 
+turn
+
 let Player1 = {
     territories: 0,
     troops: 40
@@ -168,7 +170,7 @@ let systemTroops = 0;
 
 troopCalculate(playerTroops, territories, systemValues, systemTroops);
 
-
+console.log(battle(20,20))
 
 
 
