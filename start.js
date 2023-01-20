@@ -1,13 +1,4 @@
-export default function start() {
-
-
-
-
-
-
-
-
-
+export default function start(planets) {
 
 
 

@@ -15,8 +15,6 @@ let Player2 = {
     troops: 40
 }
 
-let currentPlayer = Player1;
-
 let system1 = [
     {
         planet: "sun",
@@ -119,7 +117,7 @@ let system4 = [
     },
 ];
 
-let system0 = [
+let system5 = [
     {
         planet: "smun",
         claimed: "",
@@ -165,11 +163,29 @@ let system6 = [
     },
 ];
 
+let systems = [system1, system2, system3, system4, system5, system6];
+
+function planetNames(arrays, name) {
+
+    let planetArray = [];
+    arrays.forEach(array => {
+        arrays.forEach(object => {
+            planetArray.push(object[name]);
+        })
+    });
+    return planetArray;
+}
+
+let planets = planetNames([system1, system2, system3, system4, system5, system6], "planet");
+
+console.log(planets);
+
+
+start(planets);
+
 function clicked(planet) {
     
 }
-
-
 
 let playerTroops = 30;
 let territories = 18;
