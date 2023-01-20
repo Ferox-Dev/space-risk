@@ -5,7 +5,7 @@ export const battle = (numberoftroopsattacker, numberoftroopsdefender) => {
     let winner = 0;
 
     let battleammountattacker = numberoftroopsattacker-1
-    if (numberoftroopsattacker <= 1) return "unable";
+    if (numberoftroopsattacker <= 1) return null;
 
 
     if (numberoftroopsdefender === 1) {
