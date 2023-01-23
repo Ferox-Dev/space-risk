@@ -165,20 +165,15 @@ let system6 = [
     },
 ];
 
-
-
 function planetNames(name) {
     let systems = [system1, system2, system3, system4, system5, system6];
-
-    for(i > )
-    systems[i]
-
     let planetArray = [];
-    systems[1].forEach(array => {
-        systems[1].forEach(object => {
+
+    for(let i = 0; i < systems.length; i++) {
+        systems[i].forEach(object => {
             planetArray.push(object[name]);
         })
-    });
+    }
     return planetArray;
 }
 
