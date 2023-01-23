@@ -181,7 +181,6 @@ let planets = planetNames("planet");
 
 console.log(planets);
 
-
 start(planets);
 
 function clicked(planet) {
