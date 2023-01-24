@@ -165,8 +165,9 @@ let system6 = [
     },
 ];
 
+let systems = [system1, system2, system3, system4, system5, system6];
+
 function planetNames(name) {
-    let systems = [system1, system2, system3, system4, system5, system6];
     let planetArray = [];
 
     for(let i = 0; i < systems.length; i++) {
@@ -181,23 +182,13 @@ let planets = planetNames("planet");
 
 console.log(planets);
 
-start(planets);
-
-function clicked(planet) {
-    
-}
+start(planets, systems);
 
 let playerTroops = 30;
 let territories = 18;
 let systemValues = [4, 7];
 let systemTroops = 0;
 
-troopCalculate(playerTroops, territories, systemValues, systemTroops);
+// troopCalculate(playerTroops, territories, systemValues, systemTroops);
 
-console.log(battle(20,20))
-
-
-
-
-
-
+// console.log(battle(20,20))
