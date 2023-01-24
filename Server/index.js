@@ -165,24 +165,26 @@ let system6 = [
     },
 ];
 
+console.log(system1);
+
 let systems = [system1, system2, system3, system4, system5, system6];
+export let planetsArray = system1.concat(system2, system3, system4, system5, system6);
 
-function planetNames(name) {
-    let planetArray = [];
+console.log(planetsArray);
 
-    for(let i = 0; i < systems.length; i++) {
-        systems[i].forEach(object => {
-            planetArray.push(object[name]);
-        })
-    }
-    return planetArray;
+function planetNameCollector(name) {
+    let planetNameArray = [];
+    planetsArray.forEach(object => {
+        planetNameArray.push(object[name]);
+    })
+    return planetNameArray;
 }
 
-let planets = planetNames("planet");
+let planetNames = planetNameCollector("planet");
 
-console.log(planets);
+console.log(planetNames);
 
-start(planets, systems);
+start(planetNames, planetsArray);
 
 let playerTroops = 30;
 let territories = 18;
