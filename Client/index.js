@@ -1,4 +1,4 @@
-import clicked from './drawLines.js';
+import drawLines from './drawLines.js';
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
 document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
@@ -32,7 +32,6 @@ document.getElementById('eg').addEventListener("click", () => { clicked('eg', ['
 document.getElementById('enolla').addEventListener("click", () => { clicked('enolla', ['isars', 'eg', 'potunto']) });
 document.getElementById('vabos').addEventListener("click", () => { clicked('vabos', ['apolle', 'eg', 'potunto']) });
 
-// function clicked(planet, neighbours) {
-//     console.log(planet);
-//     console.log(neighbours);
-// }
+function clicked(planet, neighbours) {
+    drawLines(planet, neighbours);
+}

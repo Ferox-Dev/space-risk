@@ -184,10 +184,6 @@ console.log(planets);
 
 start(planets, systems);
 
-function clicked(planet) {
-    
-}
-
 let playerTroops = 30;
 let territories = 18;
 let systemValues = [4, 7];
