@@ -1,4 +1,4 @@
-export default function start(planets) {
+export default function start(planets, systems) {
 
     const shuffleArray = array => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -15,7 +15,11 @@ export default function start(planets) {
       console.log(shuffledPlanets)
 
       for(let i = 0; i < shuffledPlanets.length/2; i++) {
-        
+        for(let j = 0; j < systems.length; j++) {
+            let index = systems[j].findIndex(item => item.planet == shuffledPlanets[i])
+            
+            console.log(index);
+        }
     }
 
       
