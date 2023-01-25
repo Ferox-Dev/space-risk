@@ -182,8 +182,6 @@ function planetNameCollector(name) {
 
 let planetNames = planetNameCollector("planet");
 
-console.log(planetNames);
-
 start(planetNames, planetsArray);
 
 let playerTroops = 30;
