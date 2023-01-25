@@ -182,7 +182,9 @@ function planetNameCollector(name) {
 
 let planetNames = planetNameCollector("planet");
 
-start(planetNames, planetsArray);
+if (!gameisrunning) {
+    start(planetNames, planetsArray);
+}
 
 let playerTroops = 30;
 let territories = 18;
