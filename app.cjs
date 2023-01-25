@@ -17,9 +17,10 @@ const io = require("socket.io")(serv, {});
 io.sockets.on('connection', function (socket) {
 
     SOCKET_LIST[socket.id] = socket;
+    console.log("checksum")
 
     socket.on('disconnect', function () {
-        delete SOCKET_LIST[socket.id]
+        delete SOCKET_LIST[socket.id];
     })
 
 })

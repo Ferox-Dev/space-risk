@@ -2,8 +2,8 @@
 import troopCalculate from './TroopCalculator.js';
 import start from './start.js';
 import planetPick from './planetSelect.js';
-import {pointcalc} from './pointcalc.js';
-import {battle} from './battlecalculation.js';
+import { pointcalc } from './pointcalc.js';
+import { battle } from './battlecalculation.js';
 
 let turn = 0;
 
