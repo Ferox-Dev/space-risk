@@ -182,6 +182,8 @@ function planetNameCollector(name) {
 
 let planetNames = planetNameCollector("planet");
 
+let gameisrunning = false;
+
 if (!gameisrunning) {
     start(planetNames, planetsArray);
 }
