@@ -1,7 +1,9 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
-const socket = io.connect("localhost:4000")
+const socket = io("http://107.191.50.159:4000/")
+
+socket.emit("send_message", "cake")
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
 document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
