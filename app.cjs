@@ -1,3 +1,5 @@
+import start from './start.js';
+import { planetNames } from './serverindex';
 const express = require('express')
 const app = express();
 const serv = require('http').Server(app);
@@ -21,6 +23,7 @@ const io = require("socket.io")(serv, {
 });
 
 let joined = 0;
+let gameisrunning = false;
 
 io.sockets.on('connection', function (socket) {
 
@@ -32,6 +35,11 @@ io.sockets.on('connection', function (socket) {
         joined--;
         delete SOCKET_LIST[socket.id];
     })
+
+    if(joined == 2 && !gameisrunning) {
+        gameisrunning = true;
+        let shuffledPlanets = start(planetNames)
+    }
 
 })
 
