@@ -6,10 +6,6 @@ import { pointcalc } from './pointcalc.js';
 import { battle } from './battlecalculation.js';
 const socket = io.connect("http://107.191.50.159:4000/")
 
-const sendMessage = () => {
-    socket.emit()
-}
-
 let turn = 0;
 
 let Player1 = {
