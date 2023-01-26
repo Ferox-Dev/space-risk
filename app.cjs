@@ -34,3 +34,7 @@ io.sockets.on('connection', function (socket) {
     })
 
 })
+
+io.on("connection", (socket) => {
+    console.log(`User Connected: ${socket}`)
+});
