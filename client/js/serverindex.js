@@ -1,4 +1,5 @@
-//This contains the runtime information + functions + methods
+//This contains the runtime information + functions + method
+
 // import troopCalculate from './client/js/TroopCalculator.js';
 // import start from './start.js';
 // import planetPick from './client/js/planetSelect.js';

@@ -16,7 +16,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:3000"
+        origin: "http://107.191.50.159:4000/"
     }
 });
 
@@ -220,10 +220,9 @@ io.sockets.on('connection', function (socket) {
 })
 
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket}`)
+    console.log(`User Connected: ${socket.id}`)
+
+    socket.on("send_message", (data) => {
+        console.log(data)
+    })
 });
-
-
-
-
-
