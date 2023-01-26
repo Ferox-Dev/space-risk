@@ -1,6 +1,6 @@
 //This contains the runtime information + functions + methods
 import troopCalculate from './TroopCalculator.js';
-import start from './start.js';
+import start from '../../start.js';
 import planetPick from './planetSelect.js';
 import { pointcalc } from './pointcalc.js';
 import { battle } from './battlecalculation.js';
