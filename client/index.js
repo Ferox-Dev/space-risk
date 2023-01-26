@@ -1,6 +1,7 @@
 import drawLines from './drawLines.js';
+import colourLoad from './js/planetColourLoad.js';
 
-const socket = io.connect("localhost:4000/")
+const socket = io.connect("localhost:4000")
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
 document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
@@ -37,3 +38,7 @@ document.getElementById('vabos').addEventListener("click", () => { clicked('vabo
 function clicked(planet, neighbours) {
     drawLines(planet, neighbours);
 }
+
+socket.on("planetColourAssign", (shuffledPlanets) => {
+    colourLoad(shuffledPlanets);
+})
