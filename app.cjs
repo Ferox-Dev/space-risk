@@ -2,6 +2,9 @@ const express = require('express')
 const app = express();
 const serv = require('http').Server(app);
 
+let joined = 0;
+let gameisrunning = false;
+
 let SOCKET_LIST = [];
 let PLAYER_LIST = [];
 
@@ -10,6 +13,8 @@ app.get('/', function (req, res) {
 });
 
 app.use(express.static(__dirname + '/client'));
+
+
 serv.listen(4000, () => {
     console.log("server is running")
 });
@@ -20,8 +25,6 @@ const io = require("socket.io")(serv, {
     }
 });
 
-let joined = 0;
-let gameisrunning = false;
 
 let system1 = [
     {
@@ -172,6 +175,7 @@ let system6 = [
 ];
 
 let planetsArray = system1.concat(system2, system3, system4, system5, system6);
+console.log(planetsArray);
 
 function planetNameCollector(name) {
     let planetNameArray = [];
@@ -199,7 +203,7 @@ function start(planetNames) {
     return shuffledPlanets;
 }
 
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', (socket) => {
 
     joined++;
     console.log(joined);
@@ -208,15 +212,17 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         joined--;
+        console.log(joined);
         delete SOCKET_LIST[socket.id];
     })
 
     if(joined == 2 && !gameisrunning) {
         gameisrunning = true;
         let shuffledPlanets = start(planetNames)
-        socket.emit("planetColourAssign", shuffledPlanets);
+        let Jsonplanets = JSON.stringify(planetsArray)
+        io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
     }
-
+    
 })
 
 io.on("connection", (socket) => {

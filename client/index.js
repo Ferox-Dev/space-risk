@@ -1,4 +1,4 @@
-import drawLines from './drawLines.js';
+import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
 const socket = io.connect("localhost:4000")
@@ -39,6 +39,10 @@ function clicked(planet, neighbours) {
     drawLines(planet, neighbours);
 }
 
-socket.on("planetColourAssign", (shuffledPlanets) => {
-    colourLoad(shuffledPlanets);
+socket.on("planetColourAssign", (data) => {
+    console.log(data.shuffledPlanets);
+    console.log(data.Jsonplanets);
+    let shuffledPlanets = data.shuffledPlanets;
+    let planets = JSON.parse(data.Jsonplanets);
+    colourLoad(shuffledPlanets, planets);
 })
