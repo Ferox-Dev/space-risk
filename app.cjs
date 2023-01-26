@@ -10,16 +10,26 @@ app.get('/', function (req, res) {
 });
 
 app.use(express.static(__dirname + '/client'));
-serv.listen(4000);
-console.log("srvstrt")
+serv.listen(4000, () => {
+    console.log("server is running")
+});
 
-const io = require("socket.io")(serv, {});
+const io = require("socket.io")(serv, {
+    cors: {
+        origin: "http://localhost:3000"
+    }
+});
+
+let joined = 0;
+
 io.sockets.on('connection', function (socket) {
 
+    joined++;
     SOCKET_LIST[socket.id] = socket;
     console.log("checksum")
 
     socket.on('disconnect', function () {
+        joined--;
         delete SOCKET_LIST[socket.id];
     })
 

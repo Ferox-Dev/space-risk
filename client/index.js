@@ -1,6 +1,6 @@
 import drawLines from './drawLines.js';
 
-const socket = io('ws://localhost:3000');
+const socket = io("http://localhost:4000");
 
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
