@@ -1,4 +1,4 @@
-import { planetsArray } from './js/index.js';
+import { planetsArray } from './js/serverindex.js';
 
 let tempClick;
 
