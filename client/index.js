@@ -1,9 +1,14 @@
-import drawLines from './drawLines.js';
+import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("localhost:4000")
 
-socket.emit("send_message", "cake")
+player = {};
+
+socket.on("connected", (message, playerInfo) => {
+    player = playerInfo;
+    console.log(message);
+});
 
 {
     document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
@@ -40,9 +45,19 @@ socket.emit("send_message", "cake")
 }
 
 function clicked(planet, neighbours) {
-    drawLines(planet, neighbours);
+    socket.emit("clicked")
+    socket.on("planets", (JsonPlanets) => {
+        let planetsArray = JSON.parse(JsonPlanets);
+        drawLines(planet, neighbours, planetsArray);
+    })
 }
 
-socket.on("planetColourAssign", (shuffledPlanets) => {
-    colourLoad(shuffledPlanets);
+socket.on("planetColourAssign", (data) => {
+    console.log(data.shuffledPlanets);
+    console.log(data.Jsonplanets);
+    let shuffledPlanets = data.shuffledPlanets;
+    let planets = JSON.parse(data.Jsonplanets);
+    let planetsArray = colourLoad(shuffledPlanets, planets);
+    console.log(planetsArray);
 })
+

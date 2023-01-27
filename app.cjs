@@ -2,6 +2,21 @@ const express = require('express')
 const app = express();
 const serv = require('http').Server(app);
 
+let joined = 0;
+let gameisrunning = false;
+
+
+let players = [{
+    id: "",
+    territories: 0,
+    troops: 40
+},
+{
+    id: "",
+    territories: 0,
+    troops: 40
+}]
+
 let SOCKET_LIST = [];
 let PLAYER_LIST = [];
 
@@ -10,18 +25,16 @@ app.get('/', function (req, res) {
 });
 
 app.use(express.static(__dirname + '/client'));
+
 serv.listen(4000, () => {
     console.log("server is running")
 });
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://107.191.50.159:4000/"
+        origin: "http://localhost:4000"
     }
 });
-
-let joined = 0;
-let gameisrunning = false;
 
 let system1 = [
     {
@@ -199,30 +212,62 @@ function start(planetNames) {
     return shuffledPlanets;
 }
 
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', (socket) => {
 
     joined++;
     console.log(joined);
     SOCKET_LIST[socket.id] = socket;
-    console.log("checksum")
+
+    if(joined == 1 && !gameisrunning) {
+        players[0].id = socket.id;
+        socket.emit("connected", "You are Blue");
+    } else if(joined == 2 && !gameisrunning) {
+        players[1].id = socket.id;
+        socket.emit("connected", "You are Red");
+    }
+
+    console.log(players);
 
     socket.on('disconnect', function () {
         joined--;
+        console.log(joined);
         delete SOCKET_LIST[socket.id];
+        let idIndex = players.findIndex(item => item.id == socket.id)
+        players[idIndex].id = "";
+        console.log(players);
     })
 
     if(joined == 2 && !gameisrunning) {
         gameisrunning = true;
         let shuffledPlanets = start(planetNames)
-        socket.emit("planetColourAssign", shuffledPlanets);
+        
+        for (let i = 0; i < shuffledPlanets.length; i++) {
+
+            let index = planetsArray.find(item => item.planet == shuffledPlanets[i])
+            
+            if (i % 2 == 0) {
+                index.claimed = "blue";
+                index.troopcount = 1;
+            } else {
+                index.claimed = "red";
+                index.troopcount = 1;
+            }
+        }
+        let Jsonplanets = JSON.stringify(planetsArray)
+        io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
     }
 
+    if(gameisrunning) {
+        socket.emit("connected", "A game is already in progress")
+    }
+
+    socket.on("clicked", () => {
+        let JsonPlanets = JSON.stringify(planetsArray)
+        socket.emit("planets", JsonPlanets);
+    })
+    
 })
 
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`)
-
-    socket.on("send_message", (data) => {
-        console.log(data)
-    })
 });
