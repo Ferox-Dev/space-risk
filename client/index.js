@@ -1,7 +1,7 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("localhost:4000/")
 
 socket.emit("send_message", "cake")
 
@@ -38,7 +38,11 @@ document.getElementById('enolla').addEventListener("click", () => { clicked('eno
 document.getElementById('vabos').addEventListener("click", () => { clicked('vabos', ['apolle', 'eg', 'potunto']) });
 
 function clicked(planet, neighbours) {
-    drawLines(planet, neighbours);
+    socket.emit("clicked")
+    socket.on("planets", (JsonPlanets) => {
+        let planetsArray = JSON.parse(JsonPlanets);
+        drawLines(planet, neighbours, planetsArray);
+    })
 }
 
 socket.on("planetColourAssign", (data) => {
@@ -46,5 +50,7 @@ socket.on("planetColourAssign", (data) => {
     console.log(data.Jsonplanets);
     let shuffledPlanets = data.shuffledPlanets;
     let planets = JSON.parse(data.Jsonplanets);
-    colourLoad(shuffledPlanets, planets);
+    let planetsArray = colourLoad(shuffledPlanets, planets);
+    console.log(planetsArray);
 })
+

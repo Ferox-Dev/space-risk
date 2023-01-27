@@ -175,7 +175,6 @@ let system6 = [
 ];
 
 let planetsArray = system1.concat(system2, system3, system4, system5, system6);
-console.log(planetsArray);
 
 function planetNameCollector(name) {
     let planetNameArray = [];
@@ -208,7 +207,6 @@ io.sockets.on('connection', (socket) => {
     joined++;
     console.log(joined);
     SOCKET_LIST[socket.id] = socket;
-    console.log("checksum")
 
     socket.on('disconnect', function () {
         joined--;
@@ -219,16 +217,30 @@ io.sockets.on('connection', (socket) => {
     if(joined == 2 && !gameisrunning) {
         gameisrunning = true;
         let shuffledPlanets = start(planetNames)
+        
+        for (let i = 0; i < shuffledPlanets.length; i++) {
+
+            let index = planetsArray.find(item => item.planet == shuffledPlanets[i])
+            
+            if (i % 2 == 0) {
+                index.claimed = "blue";
+            } else {
+                index.claimed = "red";
+            }
+            
+        }
+
         let Jsonplanets = JSON.stringify(planetsArray)
         io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
     }
+
+    socket.on("clicked", () => {
+        let JsonPlanets = JSON.stringify(planetsArray)
+        socket.emit("planets", JsonPlanets);
+    })
     
 })
 
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`)
-
-    socket.on("send_message", (data) => {
-        console.log(data)
-    })
 });
