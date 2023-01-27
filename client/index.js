@@ -1,9 +1,14 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
-const socket = io("localhost:4000/")
+const socket = io("localhost:4000")
 
-socket.emit("send_message", "cake")
+player = {};
+
+socket.on("connected", (message, playerInfo) => {
+    player = playerInfo;
+    console.log(message);
+});
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
 document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
