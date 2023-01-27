@@ -32,7 +32,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:4000"
+        origin: "http://107.191.50.159:4000/"
     }
 });
 
@@ -200,14 +200,14 @@ function start(planetNames) {
 
     const shuffleArray = array => {
         for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          const temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
         return array;
-    } 
-    
+    }
+
     let shuffledPlanets = shuffleArray(planetNames);
     return shuffledPlanets;
 }
@@ -218,10 +218,10 @@ io.sockets.on('connection', (socket) => {
     console.log(joined);
     SOCKET_LIST[socket.id] = socket;
 
-    if(joined == 1 && !gameisrunning) {
+    if (joined == 1 && !gameisrunning) {
         players[0].id = socket.id;
         socket.emit("connected", "You are Blue");
-    } else if(joined == 2 && !gameisrunning) {
+    } else if (joined == 2 && !gameisrunning) {
         players[1].id = socket.id;
         socket.emit("connected", "You are Red");
     }
@@ -237,14 +237,14 @@ io.sockets.on('connection', (socket) => {
         console.log(players);
     })
 
-    if(joined == 2 && !gameisrunning) {
+    if (joined == 2 && !gameisrunning) {
         gameisrunning = true;
         let shuffledPlanets = start(planetNames)
-        
+
         for (let i = 0; i < shuffledPlanets.length; i++) {
 
             let index = planetsArray.find(item => item.planet == shuffledPlanets[i])
-            
+
             if (i % 2 == 0) {
                 index.claimed = "blue";
                 index.troopcount = 1;
@@ -257,7 +257,7 @@ io.sockets.on('connection', (socket) => {
         io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
     }
 
-    if(gameisrunning) {
+    if (gameisrunning) {
         socket.emit("connected", "A game is already in progress")
     }
 
@@ -265,7 +265,7 @@ io.sockets.on('connection', (socket) => {
         let JsonPlanets = JSON.stringify(planetsArray)
         socket.emit("planets", JsonPlanets);
     })
-    
+
 })
 
 io.on("connection", (socket) => {

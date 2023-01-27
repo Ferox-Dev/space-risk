@@ -1,9 +1,9 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
-const socket = io("localhost:4000")
+const socket = io("http://107.191.50.159:4000/")
 
-player = {};
+let player = {};
 
 socket.on("connected", (message, playerInfo) => {
     player = playerInfo;
