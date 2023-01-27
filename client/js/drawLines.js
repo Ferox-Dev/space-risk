@@ -1,8 +1,6 @@
-import { planetsArray } from './js/serverindex.js';
-
 let tempClick;
 
-export default function drawLines(planet, neighbours) {
+export default function drawLines(planet, neighbours, planetsArray) {
 
     let canvas = document.getElementById('canvas')
     let ctx = canvas.getContext('2d');
