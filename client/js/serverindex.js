@@ -1,14 +1,10 @@
-//This contains the runtime information + functions + methods
-import troopCalculate from './TroopCalculator.js';
-import start from '../../start.js';
-import planetPick from './planetSelect.js';
-import { pointcalc } from './pointcalc.js';
-import { battle } from './battlecalculation.js';
-const socket = io.connect("http://107.191.50.159:4000/")
+//This contains the runtime information + functions + method
 
-const sendMessage = () => {
-    socket.emit()
-}
+// import troopCalculate from './client/js/TroopCalculator.js';
+// import start from './start.js';
+// import planetPick from './client/js/planetSelect.js';
+// import { pointcalc } from './client/js/pointcalc.js';
+// import { battle } from './client/js/battlecalculation.js';
 
 let turn = 0;
 
@@ -170,8 +166,6 @@ let system6 = [
     },
 ];
 
-console.log(system1);
-
 let systems = [system1, system2, system3, system4, system5, system6];
 export let planetsArray = system1.concat(system2, system3, system4, system5, system6);
 
@@ -185,13 +179,7 @@ function planetNameCollector(name) {
     return planetNameArray;
 }
 
-let planetNames = planetNameCollector("planet");
-
-let gameisrunning = false;
-
-if (!gameisrunning) {
-    start(planetNames, planetsArray);
-}
+export let planetNames = planetNameCollector("planet");
 
 let playerTroops = 30;
 let territories = 18;
