@@ -1,0 +1,5 @@
+Todo list: 
+
+-Player connections
+-troops placements
+
