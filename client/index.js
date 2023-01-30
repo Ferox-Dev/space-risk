@@ -3,12 +3,29 @@ import colourLoad from './js/planetColourLoad.js';
 
 const socket = io("localhost:4000")
 
-player = {};
+let player = {};
+let yourTurn = false;
+let turn = 0;
 
 socket.on("connected", (message, playerInfo) => {
     player = playerInfo;
     console.log(message);
+    console.log(player);
 });
+
+socket.on("readyButton", () => {
+    document.getElementById("startGame").style.display = "block";
+});
+
+document.getElementById('startGame').addEventListener("click", () => {
+    socket.emit('playerReady', player.id);
+});
+
+socket.on("screenHide", () => {
+    document.getElementById("gameScreen").style.display = "none";
+});
+
+
 
 document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
 document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
@@ -51,11 +68,12 @@ function clicked(planet, neighbours) {
 }
 
 socket.on("planetColourAssign", (data) => {
-    console.log(data.shuffledPlanets);
-    console.log(data.Jsonplanets);
+    document.getElementById("startGame").style.display = "none";
+    // console.log(data.shuffledPlanets);
+    // console.log(data.Jsonplanets);
     let shuffledPlanets = data.shuffledPlanets;
     let planets = JSON.parse(data.Jsonplanets);
     let planetsArray = colourLoad(shuffledPlanets, planets);
-    console.log(planetsArray);
+    // console.log(planetsArray);
 })
 

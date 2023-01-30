@@ -4,7 +4,8 @@ const serv = require('http').Server(app);
 
 let joined = 0;
 let gameisrunning = false;
-
+let ready = 0;
+let playerReady = "";
 
 let players = [{
     id: "",
@@ -214,57 +215,81 @@ function start(planetNames) {
 
 io.sockets.on('connection', (socket) => {
 
-    joined++;
-    console.log(joined);
-    SOCKET_LIST[socket.id] = socket;
+    if(!gameisrunning) {
 
-    if(joined == 1 && !gameisrunning) {
-        players[0].id = socket.id;
-        socket.emit("connected", "You are Blue");
-    } else if(joined == 2 && !gameisrunning) {
-        players[1].id = socket.id;
-        socket.emit("connected", "You are Red");
-    }
-
-    console.log(players);
-
-    socket.on('disconnect', function () {
-        joined--;
+        SOCKET_LIST[joined] = socket;
+        joined++;
         console.log(joined);
-        delete SOCKET_LIST[socket.id];
-        let idIndex = players.findIndex(item => item.id == socket.id)
-        players[idIndex].id = "";
-        console.log(players);
-    })
-
-    if(joined == 2 && !gameisrunning) {
-        gameisrunning = true;
-        let shuffledPlanets = start(planetNames)
         
-        for (let i = 0; i < shuffledPlanets.length; i++) {
-
-            let index = planetsArray.find(item => item.planet == shuffledPlanets[i])
-            
-            if (i % 2 == 0) {
-                index.claimed = "blue";
-                index.troopcount = 1;
-            } else {
-                index.claimed = "red";
-                index.troopcount = 1;
-            }
+        if(joined == 1 && !gameisrunning) {
+            players[0].id = socket.id;
+            socket.emit("connected", "You are Blue", players[0]);
+        } else if(joined == 2 && !gameisrunning) {
+            players[1].id = socket.id;
+            socket.emit("connected", "You are Red", players[1]);
         }
-        let Jsonplanets = JSON.stringify(planetsArray)
-        io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
+
+        socket.on('disconnect', () => {
+            joined--;
+            console.log(joined);
+            delete SOCKET_LIST[socket.id];
+            let idIndex = players.findIndex(item => item.id == socket.id)
+            delete players[idIndex].id;
+        })
+
+        if(joined == 2 && !gameisrunning) {
+            io.emit("readyButton")
+        }
+
+        socket.on("playerReady", (player) => {
+
+            if(playerReady != player) {
+                ready++;
+            }
+            
+            playerReady = player;
+
+            if(ready == 2) {
+                gameisrunning = true;
+                let shuffledPlanets = start(planetNames)
+                
+                for (let i = 0; i < shuffledPlanets.length; i++) {
+
+                    let index = planetsArray.find(item => item.planet == shuffledPlanets[i]);
+                    
+                    if (i % 2 == 0) {
+                        index.claimed = "blue";
+                        index.troopcount = 1;
+                    } else {
+                        index.claimed = "red";
+                        index.troopcount = 1;
+                    }
+                }
+                let Jsonplanets = JSON.stringify(planetsArray)
+                io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
+            }
+            
+        }) 
+            
+        socket.on("clicked", () => {
+            let JsonPlanets = JSON.stringify(planetsArray)
+            socket.emit("planets", JsonPlanets);
+        })
     }
 
-    if(gameisrunning) {
-        socket.emit("connected", "A game is already in progress")
-    }
-
-    socket.on("clicked", () => {
-        let JsonPlanets = JSON.stringify(planetsArray)
-        socket.emit("planets", JsonPlanets);
+    socket.on("turnChange", (data) => {
+        if(gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
+        
+        } else if(gameisrunning) {
+            console.log("hidden");
+            socket.emit("screenHide");
+        }
     })
+
+    if(gameisrunning && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
+        console.log("hidden");
+        socket.emit("screenHide");
+    }
     
 })
 

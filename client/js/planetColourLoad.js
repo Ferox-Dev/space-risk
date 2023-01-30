@@ -7,8 +7,6 @@ export default function colourLoad(shuffledPlanets, planets) {
 
         let planetName = document.getElementById(planets[i].planet);
 
-        console.log(planets[i]);
-
         if (planets[i].claimed == "blue") {
             planetName.src = "./images/planets/" + planets[i].planet + "_blue.png"
         } else {
