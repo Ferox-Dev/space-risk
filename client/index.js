@@ -1,6 +1,9 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
+// Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
+let turnmode = "Battack"
+
 const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
@@ -9,6 +12,7 @@ socket.on("connected", (message, playerInfo) => {
     player = playerInfo;
     console.log(message);
 });
+
 
 {
     document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
@@ -50,6 +54,16 @@ function clicked(planet, neighbours) {
         let planetsArray = JSON.parse(JsonPlanets);
         drawLines(planet, neighbours, planetsArray);
     })
+
+    if (turnmode = "Battack" || "Rattack") {
+        if (document.getElementById(planet).style.filter == "brightness(200%)") {
+            document.getElementById(planet).style.filter = "brightness(100%)"
+        } else {
+            document.getElementById(planet).style.filter = "brightness(200%)"
+        }
+
+    }
+
 }
 
 socket.on("planetColourAssign", (data) => {
