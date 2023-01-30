@@ -76,4 +76,3 @@ socket.on("planetColourAssign", (data) => {
     let planetsArray = colourLoad(shuffledPlanets, planets);
     // console.log(planetsArray);
 })
-
