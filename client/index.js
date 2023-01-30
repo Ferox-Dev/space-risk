@@ -188,7 +188,7 @@ socket.on("planetColourAssign", (data) => {
 });
 
 socket.on("turn", (turn) => {
-
+    yourTurn = true;
     if (turn == "placeTroops") {
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
@@ -196,10 +196,10 @@ socket.on("turn", (turn) => {
     } else if (turn == "move troops") {
         document.getElementById("confirm").style.display = "block"
     }
-
 });
 
 document.getElementById('confirm').addEventListener("click", () => {
     document.getElementById("confirm").style.display = "none"
+    yourTurn = false;
     socket.emit("move", {});
 });
