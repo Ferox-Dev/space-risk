@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 let turnmode = "Battack"
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("localhost:4000")
 
 let player = {};
 let colour = "";
@@ -193,7 +193,6 @@ socket.on("planetColourAssign", (data) => {
 });
 
 socket.on("turn", (turn) => {
-    
     if(turn == "placeTroops") {
         document.getElementById("confirm").style.display = "block"
     } else if(turn == "attack") {
@@ -201,7 +200,6 @@ socket.on("turn", (turn) => {
     } else if(turn == "move troops") {
         document.getElementById("confirm").style.display = "block"
     }
-
 });
 
 document.getElementById('confirm').addEventListener("click", () => {
