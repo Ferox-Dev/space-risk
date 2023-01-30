@@ -266,11 +266,10 @@ io.sockets.on('connection', (socket) => {
         socket.emit("planets", JsonPlanets);
     })
 
-    socket.on("planetcolorcheck", (planetcolortocheck) => {
-        let planetsArraycolors = system1.concat(system2, system3, system4, system5, system6);
-        let result = ""
-        result = planetsArraycolors.filter(planet => planet.planet == planetcolortocheck);
-        socket.emit("planetsearched", result);
+    socket.on("planetcolorcheck", () => {
+        console.log("1")
+        systemscombined = system1.concat(system2, system3, system4, system5, system6);
+        socket.emit("planetsearched", systemscombined);
     })
 
 })
