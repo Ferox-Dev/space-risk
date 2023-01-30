@@ -10,7 +10,7 @@ let turn = "";
 
 socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
-    colour - playerColour;
+    colour = playerColour;
     console.log(player);
 });
 
