@@ -1,5 +1,6 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
+
 import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 let turnmode = "Battack"
@@ -7,11 +8,26 @@ let turnmode = "Battack"
 const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
+let colour = "";
+let yourTurn = false;
+let turn = "";
 
-// 
-socket.on("connected", (message, playerInfo) => {
+socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
-    console.log(message);
+    colour = playerColour;
+    console.log(player);
+});
+
+socket.on("readyButton", () => {
+    document.getElementById("startGame").style.display = "block";
+});
+
+document.getElementById('startGame').addEventListener("click", () => {
+    socket.emit('playerReady', player.id);
+});
+
+socket.on("screenHide", () => {
+    document.getElementById("gameScreen").style.display = "none";
 });
 
 // Get planets and check if they've been clicked
@@ -53,7 +69,7 @@ let attacker = ""
 let defender = ""
 let howmanyruns = 0
 
-//checks if plantes have been clicked ans lists their neigbors 
+//checks if plantes have been clicked and lists their neigbors 
 function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
 
@@ -164,15 +180,31 @@ function clicked(planet, neighbours) {
             //This if tree is for setting attacker and defender based on the turn
         }
     }
-
 }
 
 socket.on("planetColourAssign", (data) => {
-    console.log(data.shuffledPlanets);
-    console.log(data.Jsonplanets);
+    document.getElementById("startGame").style.display = "none";
+    // console.log(data.shuffledPlanets);
+    // console.log(data.Jsonplanets);
     let shuffledPlanets = data.shuffledPlanets;
     let planets = JSON.parse(data.Jsonplanets);
     let planetsArray = colourLoad(shuffledPlanets, planets);
-    console.log(planetsArray);
-})
+    // console.log(planetsArray);
+});
 
+socket.on("turn", (turn) => {
+    
+    if(turn == "placeTroops") {
+        document.getElementById("confirm").style.display = "block"
+    } else if(turn == "attack") {
+        document.getElementById("confirm").style.display = "block"
+    } else if(turn == "move troops") {
+        document.getElementById("confirm").style.display = "block"
+    }
+
+});
+
+document.getElementById('confirm').addEventListener("click", () => {
+    document.getElementById("confirm").style.display = "none"
+    socket.emit("move", {});
+});
