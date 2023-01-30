@@ -1,6 +1,6 @@
 import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
-
+import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 let turnmode = "Battack"
 
@@ -8,12 +8,13 @@ const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 
+// 
 socket.on("connected", (message, playerInfo) => {
     player = playerInfo;
     console.log(message);
 });
 
-
+// Get planets and check if they've been clicked
 {
     document.getElementById('sun').addEventListener("click", () => { clicked('sun', ['earth', 'venus', 'jupiter', 'saturn']) });
     document.getElementById('earth').addEventListener("click", () => { clicked('earth', ['sun', 'venus']) });
@@ -47,7 +48,11 @@ socket.on("connected", (message, playerInfo) => {
     document.getElementById('enolla').addEventListener("click", () => { clicked('enolla', ['isars', 'eg', 'potunto']) });
     document.getElementById('vabos').addEventListener("click", () => { clicked('vabos', ['apolle', 'eg', 'potunto']) });
 }
+// attacker plannet and defender planet for battling 
+let attacker = ""
+let defender = ""
 
+//checks if plantes have been clicked ans lists their neigbors 
 function clicked(planet, neighbours) {
     socket.emit("clicked")
     socket.on("planets", (JsonPlanets) => {
@@ -56,10 +61,66 @@ function clicked(planet, neighbours) {
     })
 
     if (turnmode = "Battack" || "Rattack") {
+        socket.emit("planetcolorcheck", planet)
+        let planetchecked = ""
+        socket.on("planetsearched", result => {
+            planetchecked = result
+        });
+
         if (document.getElementById(planet).style.filter == "brightness(200%)") {
             document.getElementById(planet).style.filter = "brightness(100%)"
         } else {
             document.getElementById(planet).style.filter = "brightness(200%)"
+
+            if (turnmode = "Battack" /*/check if player is blue/*/) {
+                if (planetchecked.claimed == 'blue') {
+                    if (defender) {
+                        if (neighbours.includes(defender.planet)) {
+                            attacker = planet
+                        } else {
+                            console.log("this planet is not a neighbor of the defeneder!")
+                        }
+
+                    } else {
+                        attacker = planet
+                    }
+                } else {
+                    if (attacker) {
+                        if (neighbours.includes(attacker.planet)) {
+                            defender = planet
+                        } else {
+                            console.log("this planet is not a neighbor of the defeneder!")
+                        }
+                    } else {
+                        defender = planet
+                    }
+                }
+            } else {
+                if (planetchecked.claimed == 'red' /*/check if player is red/*/) {
+                    if (defender) {
+                        if (neighbours.includes(defender.planet)) {
+                            attacker = planet
+                        } else {
+                            console.log("this planet is not a neighbor of the defeneder!")
+                        }
+
+                    } else {
+                        attacker = planet
+                    }
+                } else {
+                    if (attacker) {
+                        if (neighbours.includes(attacker.planet)) {
+                            defender = planet
+                        } else {
+                            console.log("this planet is not a neighbor of the defeneder!")
+                        }
+                    } else {
+                        defender = planet
+                    }
+                }
+            }
+
+            //This if tree is for setting attacker and defender based on the turn
         }
 
     }
