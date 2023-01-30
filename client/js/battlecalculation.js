@@ -1,10 +1,10 @@
-export const battle = (numberoftroopsattacker, numberoftroopsdefender) => {
+export default function battle(numberoftroopsattacker, numberoftroopsdefender) {
 
     let whitedice = [];
     let reddice = [];
     let winner = 0;
 
-    let battleammountattacker = numberoftroopsattacker-1
+    let battleammountattacker = numberoftroopsattacker - 1
     if (numberoftroopsattacker <= 1) return null;
 
 
@@ -12,7 +12,7 @@ export const battle = (numberoftroopsattacker, numberoftroopsdefender) => {
         whitedice.push(diceroll());
         if (battleammountattacker === 1) {
             reddice.push(diceroll());
-        } else if (battleammountattacker === 2) { 
+        } else if (battleammountattacker === 2) {
             reddice.push(diceroll());
             reddice.push(diceroll());
         } else if (battleammountattacker >= 3) {
@@ -21,9 +21,9 @@ export const battle = (numberoftroopsattacker, numberoftroopsdefender) => {
             reddice.push(diceroll());
         }
 
-        whitedice.sort(function(a, b){return a - b});
-        reddice.sort(function(a, b){return a - b});
-    
+        whitedice.sort(function (a, b) { return a - b });
+        reddice.sort(function (a, b) { return a - b });
+
         whitedice.reverse();
         reddice.reverse();
 
@@ -33,70 +33,70 @@ export const battle = (numberoftroopsattacker, numberoftroopsdefender) => {
             winner++
         }
 
-    } else if (numberoftroopsdefender >= 2)  {
+    } else if (numberoftroopsdefender >= 2) {
         whitedice.push(diceroll());
         whitedice.push(diceroll());
         if (battleammountattacker === 1) {
 
             reddice.push(diceroll());
-            whitedice.sort(function(a, b){return a - b});
-            reddice.sort(function(a, b){return a - b});
-        
+            whitedice.sort(function (a, b) { return a - b });
+            reddice.sort(function (a, b) { return a - b });
+
             whitedice.reverse();
             reddice.reverse();
-    
+
             if (whitedice[0] >= reddice[0]) {
                 winner--
             } else {
                 winner++
             }
 
-        } else if (battleammountattacker === 2) { 
+        } else if (battleammountattacker === 2) {
             reddice.push(diceroll());
             reddice.push(diceroll());
 
-            whitedice.sort(function(a, b){return a - b});
-            reddice.sort(function(a, b){return a - b});
-        
+            whitedice.sort(function (a, b) { return a - b });
+            reddice.sort(function (a, b) { return a - b });
+
             whitedice.reverse();
             reddice.reverse();
-    
+
             if (whitedice[0] >= reddice[0]) {
                 winner--
             } else {
                 winner++
             }
-    
+
             if (whitedice[1] >= reddice[1]) {
                 winner--
             } else {
                 winner++
             }
-    
+
         } else if (battleammountattacker >= 3) {
             reddice.push(diceroll());
             reddice.push(diceroll());
             reddice.push(diceroll());
 
-            whitedice.sort(function(a, b){return a - b});
-            reddice.sort(function(a, b){return a - b});
-        
+            whitedice.sort(function (a, b) { return a - b });
+            reddice.sort(function (a, b) { return a - b });
+
             whitedice.reverse();
             reddice.reverse();
-    
+
             if (whitedice[0] >= reddice[0]) {
                 winner--
             } else {
                 winner++
             }
-    
+
             if (whitedice[1] >= reddice[1]) {
                 winner--
             } else {
                 winner++
             }
-    
-        } 
+
+        }
     }
 
     return winner; //returns -2, -1, 0,  +1, +2
