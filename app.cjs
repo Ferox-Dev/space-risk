@@ -300,6 +300,12 @@ io.sockets.on('connection', (socket) => {
         socket.emit("screenHide");
     }
     
+    socket.on("planetcolorcheck", () => {
+        console.log("1")
+        systemscombined = system1.concat(system2, system3, system4, system5, system6);
+        socket.emit("planetsearched", systemscombined);
+    })
+
 })
 
 io.on("connection", (socket) => {
