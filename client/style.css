@@ -31,3 +31,182 @@ body {
     height: 100px;
     display: none;
 }
+
+div.sun {
+    position: absolute;
+    top: 175px;
+    left: 256px;
+}
+    
+div.venus {
+    position: absolute;
+    top: 380px;
+    left: 225px;
+}
+    
+div.earth {
+    position: absolute;
+    top: 280px;
+    left: 85px;
+}
+    
+div.saturn {
+    position: absolute;
+    top: 295px;
+    left: 430px;
+}
+    
+div.jupiter {
+    position: absolute;
+    top: 115px;
+    left: 485px;
+}
+    
+    
+    
+    
+div.sunner {
+    position: absolute;
+    top: 215px;
+    left: 900px;
+}
+    
+div.penutt {
+    position: absolute;
+    top: 355px;
+    left: 665px;
+}
+    
+div.chese {
+    position: absolute;
+    top: 440px;
+    left: 950px;
+}
+    
+div.kyoob {
+    position: absolute;
+    top: 410px;
+    left: 795px;
+}
+    
+div.tulia {
+    position: absolute;
+    top: 195px;
+    left: 675px;
+}
+    
+    
+    
+    
+div.banasun {
+    position: absolute;
+    top: 875px;
+    left: 440px;
+}
+    
+div.george {
+    position: absolute;
+    top: 795px;
+    left: 285px;
+}
+    
+div.lennie {
+    position: absolute;
+    top: 675px;
+    left: 420px;
+}
+    
+div.nrutas {
+    position: absolute;
+    top: 800px;
+    left: 610px;
+}
+    
+    
+#troops_lun {
+    position: absolute;
+    top: 865px;
+    left: 880px;
+}
+    
+    div.haf {
+    
+    position: absolute;
+    top: 895px;
+    left: 1040px;
+    }
+    
+    div.fotbal {
+    
+    position: absolute;
+    top: 730px;
+    left: 1090px;
+    }
+    
+    div.apolle {
+    
+    position: absolute;
+    top: 760px;
+    left: 1250px;
+    }
+    
+    
+    
+    div.smun {
+    
+    position: absolute;
+    top: 405px;
+    left: 1305px;
+    }
+    
+    div.pairr {
+    
+    position: absolute;
+    top: 200px;
+    left: 1235px;
+    }
+    
+    div.cooki {
+    
+    position: absolute;
+    top: 270px;
+    left: 1495px;
+    }
+    
+    div.isars {
+    
+    position: absolute;
+    top: 215px;
+    left: 1670px;
+    }
+    
+    
+    
+    
+    div.potunto {
+    
+    position: absolute;
+    top: 805px;
+    left: 1690px;
+    }
+    
+    div.eg {
+    
+    position: absolute;
+    top: 710px;
+    left: 1535px;
+    }
+    
+    div.enolla {
+    
+    position: absolute;
+    top: 595px;
+    left: 1725px;
+    }
+    
+    div.vabos {
+    
+    position: absolute;
+    top: 890px;
+    left: 1520px;
+    }
