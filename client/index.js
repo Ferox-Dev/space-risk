@@ -79,17 +79,12 @@ function clicked(planet, neighbours) {
         drawLines(planet, neighbours, planetsArray);
     })
 
-    if (turnmode = "Battack" || "Rattack") {
+    if (turn = "attack") {
         console.log(`start: ${attacker} and ${defender}`)
         console.log(attacker)
         console.log(defender)
         if (document.getElementById(planet).style.filter == "brightness(200%)") {
-            if (turnmode = "Battack" /*/check if player is blue/*/) {
-                if (planet == attacker.planet) { attacker = "" }
-                if (planet == defender.planet) { defender = "" }
-                document.getElementById(planet).style.filter = "brightness(100%)"
-            }
-            if (turnmode = "Rattack" /*/check if player is red/*/) {
+            if (yourTurn) {
                 if (planet == attacker.planet) { attacker = "" }
                 if (planet == defender.planet) { defender = "" }
                 document.getElementById(planet).style.filter = "brightness(100%)"
@@ -101,6 +96,7 @@ function clicked(planet, neighbours) {
             socket.emit("planetcolorcheck",)
 
             socket.on("planetsearched", systemscombined => {
+                if (yourTurn == false) { return; }
                 let result = ""
                 result = systemscombined.filter(planetz => planetz.planet == planet);
 
@@ -108,7 +104,7 @@ function clicked(planet, neighbours) {
                 console.log(`First check of: ${attacker} and ${defender}`)
                 console.log(attacker)
                 console.log(defender)
-                if (turnmode == "Battack" /*/check if player is blue/*/) {
+                if (yourTurn == true && colour == "blue") {
                     console.log(`Dev check planet type: ${result[0].claimed}`)
                     if (result[0].claimed == 'blue') {
                         if (attacker) return console.log("already an attacker selected");
@@ -144,35 +140,34 @@ function clicked(planet, neighbours) {
                             console.log("on -> defender -> blue -> no attacker")
                         }
                     }
-                }
-                // } else if (turnmode == "Rattack" /*/check if player is Red/*/) {
-                //     if (result[0].claimed == 'red' /*/check if player is red/*/) {
-                //         if (defender) {
-                //             if (neighbours.includes(defender.planet)) {
-                //                 attacker = result[0]
-                //                 document.getElementById(planet).style.filter = "brightness(200%)"
-                //             } else {
-                //                 console.log("this planet is not a neighbor of the defeneder!")
-                //             }
+                } else if (yourTurn == true && colour == "red") {
+                    if (result[0].claimed == 'red' /*/check if player is red/*/) {
+                        if (defender) {
+                            if (neighbours.includes(defender.planet)) {
+                                attacker = result[0]
+                                document.getElementById(planet).style.filter = "brightness(200%)"
+                            } else {
+                                console.log("this planet is not a neighbor of the defeneder!")
+                            }
 
-                //         } else {
-                //             attacker = result[0]
-                //             document.getElementById(planet).style.filter = "brightness(200%)"
-                //         }
-                //     } else {
-                //         if (attacker) {
-                //             if (neighbours.includes(attacker.planet)) {
-                //                 defender = result[0]
-                //                 document.getElementById(planet).style.filter = "brightness(200%)"
-                //             } else {
-                //                 console.log("this planet is not a neighbor of the defeneder!")
-                //             }
-                //         } else {
-                //             defender = result[0]
-                //             document.getElementById(planet).style.filter = "brightness(200%)"
-                //         }
-                //     }
-                // }
+                        } else {
+                            attacker = result[0]
+                            document.getElementById(planet).style.filter = "brightness(200%)"
+                        }
+                    } else {
+                        if (attacker) {
+                            if (neighbours.includes(attacker.planet)) {
+                                defender = result[0]
+                                document.getElementById(planet).style.filter = "brightness(200%)"
+                            } else {
+                                console.log("this planet is not a neighbor of the defeneder!")
+                            }
+                        } else {
+                            defender = result[0]
+                            document.getElementById(planet).style.filter = "brightness(200%)"
+                        }
+                    }
+                }
 
                 console.log(`end check of: ${attacker} and ${defender}`)
                 console.log("-----------------------------------------")
@@ -193,12 +188,12 @@ socket.on("planetColourAssign", (data) => {
 });
 
 socket.on("turn", (turn) => {
-    
-    if(turn == "placeTroops") {
+
+    if (turn == "placeTroops") {
         document.getElementById("confirm").style.display = "block"
-    } else if(turn == "attack") {
+    } else if (turn == "attack") {
         document.getElementById("confirm").style.display = "block"
-    } else if(turn == "move troops") {
+    } else if (turn == "move troops") {
         document.getElementById("confirm").style.display = "block"
     }
 
