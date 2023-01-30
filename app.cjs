@@ -6,6 +6,8 @@ let joined = 0;
 let gameisrunning = false;
 let ready = 0;
 let playerReady = "";
+let playerMove = "";
+let turn = "placeTroops";
 
 let players = [{
     id: "",
@@ -223,10 +225,10 @@ io.sockets.on('connection', (socket) => {
         
         if(joined == 1 && !gameisrunning) {
             players[0].id = socket.id;
-            socket.emit("connected", "You are Blue", players[0]);
+            socket.emit("connected", "blue", players[0]);
         } else if(joined == 2 && !gameisrunning) {
             players[1].id = socket.id;
-            socket.emit("connected", "You are Red", players[1]);
+            socket.emit("connected", "red", players[1]);
         }
 
         socket.on('disconnect', () => {
@@ -267,27 +269,34 @@ io.sockets.on('connection', (socket) => {
                 }
                 let Jsonplanets = JSON.stringify(planetsArray)
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
+                SOCKET_LIST[0].emit("turn", turn);
             }
-            
         }) 
-            
-        socket.on("clicked", () => {
-            let JsonPlanets = JSON.stringify(planetsArray)
-            socket.emit("planets", JsonPlanets);
-        })
     }
 
-    socket.on("turnChange", (data) => {
+    socket.on("move", (data) => {
         if(gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
-        
-        } else if(gameisrunning) {
-            console.log("hidden");
-            socket.emit("screenHide");
+            if(socket == SOCKET_LIST[0]) {
+                SOCKET_LIST[1].emit("turn", turn);
+            } else if(socket == SOCKET_LIST[1]) {
+                if(turn == "placeTroops") {
+                    turn = "attack";
+                } else if(turn == "attack") {
+                    turn == "moveTroops";
+                } else if(turn == "moveTroops") {
+                    turn = "placeTroops";
+                }
+                SOCKET_LIST[0].emit("turn", turn);
+            }
         }
     })
 
+    socket.on("clicked", () => {
+        let JsonPlanets = JSON.stringify(planetsArray)
+        socket.emit("planets", JsonPlanets);
+    })
+
     if(gameisrunning && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
-        console.log("hidden");
         socket.emit("screenHide");
     }
     

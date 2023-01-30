@@ -4,12 +4,13 @@ import colourLoad from './js/planetColourLoad.js';
 const socket = io("localhost:4000")
 
 let player = {};
+let colour = "";
 let yourTurn = false;
-let turn = 0;
+let turn = "";
 
-socket.on("connected", (message, playerInfo) => {
+socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
-    console.log(message);
+    colour - playerColour;
     console.log(player);
 });
 
@@ -75,4 +76,21 @@ socket.on("planetColourAssign", (data) => {
     let planets = JSON.parse(data.Jsonplanets);
     let planetsArray = colourLoad(shuffledPlanets, planets);
     // console.log(planetsArray);
-})
+});
+
+socket.on("turn", (turn) => {
+    
+    if(turn == "placeTroops") {
+        document.getElementById("confirm").style.display = "block"
+    } else if(turn == "attack") {
+        document.getElementById("confirm").style.display = "block"
+    } else if(turn == "move troops") {
+        document.getElementById("confirm").style.display = "block"
+    }
+
+});
+
+document.getElementById('confirm').addEventListener("click", () => {
+    document.getElementById("confirm").style.display = "none"
+    socket.emit("move", {});
+});
