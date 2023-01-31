@@ -18,7 +18,7 @@ socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
     colour = playerColour;
     console.log(player);
-    console.log("You are "+colour);
+    console.log("You are " + colour);
 });
 
 socket.on("readyButton", () => {
@@ -79,18 +79,18 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     document.getElementById('battlebutton').style.display = "none";
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     if (!attacker || !defender) return console.log("You must have both an attacker and defender selected");
-    let troopschange = null
-    let planetslosing = null
-    let ammountoftroopsleft = null
-    let tielostplanet = null
-    let tieammountoftroopsleft = null
+    let troopschange
+    let planetslosing
+    let ammountoftroopsleft
+    let tielostplanet
+    let tieammountoftroopsleft
     troopschange = battle(attacker.troopcount, defender.troopcount)
     if (troopschange == -2) {
-        console.log("lose 2")
+        console.log("attacker  lose 2")
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 2
     } else if (troopschange == -1) {
-        console.log("lose 1")
+        console.log("attacker lose 1")
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
     } else if (troopschange == 0) {
@@ -98,13 +98,13 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
         tielostplanet = defender
-        tieammountoftroopsleft = defender.planet - 1
+        tieammountoftroopsleft = defender.troopcount - 1
     } else if (troopschange == 1) {
-        console.log("lose -1")
+        console.log("defender lose -1")
         planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 1
     } else if (troopschange == 2) {
-        console.log("lose -2")
+        console.log("defender lose -2")
         planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 2
     }
