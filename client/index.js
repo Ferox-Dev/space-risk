@@ -75,16 +75,16 @@ let ran = 0;
 function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
 
-    if(turn == "placeTroops" && yourTurn && player.troops > 0) {
+    if (turn == "placeTroops" && yourTurn && player.troops > 0) {
         let planetColour = planets.find(item => item.planet == planet);
-        if(planetColour.claimed == colour) {
+        if (planetColour.claimed == colour) {
             ran = 0;
             document.getElementById('troopnumber').max = player.troops;
             document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
             document.getElementById('troopnumContainer').style.display = "block";
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            if(ran == 0) {
+            if (ran == 0) {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 player.troops -= placedTroops;
                 let planetFind = planets.find(item => item.planet == planet);
@@ -96,9 +96,9 @@ function clicked(planet, neighbours) {
                 ran = 1;
             }
         });
-        document.getElementById('cancel').addEventListener("click", () => {document.getElementById('troopnumContainer').style.display = "none";});
+        document.getElementById('cancel').addEventListener("click", () => { document.getElementById('troopnumContainer').style.display = "none"; });
     }
-    
+
     if (turn == "attack") {
 
         socket.emit("clicked")
@@ -150,7 +150,7 @@ function clicked(planet, neighbours) {
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                                 console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
-                                console.log(`this planet is not a neighbor of the ${defender}!`)
+                                console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
 
                         } else {
@@ -165,7 +165,7 @@ function clicked(planet, neighbours) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
-                                console.log("on -> defender -> blue -> negibor check attacker")
+                                console.log("on -> defender -> blue -> negibor check attacker") /*/ Alert Box Messages? /*/
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
@@ -186,7 +186,7 @@ function clicked(planet, neighbours) {
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                                 console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
-                                console.log(`this planet is not a neighbor of the ${defender}!`)
+                                console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
 
                         } else {
@@ -203,7 +203,7 @@ function clicked(planet, neighbours) {
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                                 console.log("on -> defender -> blue -> negibor check attacker")
                             } else {
-                                console.log("this planet is not a neighbor of the defeneder!")
+                                console.log("this planet is not a neighbor of the defeneder!") /*/ Alert Box Messages? /*/
                             }
                         } else {
                             defender = result[0]
@@ -220,7 +220,11 @@ function clicked(planet, neighbours) {
     }
 }
 
-
+{
+    if (!attacker || !defender) return console.log("You must have both an attacker and defender selected");
+    let troopschange
+    troopschange = battle(attacker.troopcount, defender.troopcount)
+}
 
 
 socket.on("planetColourAssign", (data) => {
@@ -252,12 +256,12 @@ document.getElementById('confirm').addEventListener("click", () => {
     document.getElementById("confirm").style.display = "none"
     yourTurn = false;
     let jsonplanets = JSON.stringify(planets);
-    socket.emit("turnChange", {player, jsonplanets});
+    socket.emit("turnChange", { player, jsonplanets });
 });
 
 function pageUpdate(planets) {
 
-    for(let i = 0; i < planets.length; i++) {
+    for (let i = 0; i < planets.length; i++) {
         document.getElementById("troops_" + planets[i].planet).innerHTML = planets[i].troopcount;
     }
 
