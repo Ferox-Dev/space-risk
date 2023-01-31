@@ -330,13 +330,17 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
         document.getElementById("infotext").innerHTML = "turn: "+turn+"<br>You are: "+colour;
         document.getElementById("confirm").style.display = "block"
     }
+    document.getElementById('waitbox').style.display = "none";
 });
 
 document.getElementById('confirm').addEventListener("click", () => {
-    document.getElementById("confirm").style.display = "none"
-    yourTurn = false;
-    let jsonplanets = JSON.stringify(planets);
-    socket.emit("turnChange", { player, jsonplanets });
+    if(player.troops == 0) {
+        document.getElementById("confirm").style.display = "none"
+        document.getElementById('waitbox').style.display = "block";
+        yourTurn = false;
+        let jsonplanets = JSON.stringify(planets);
+        socket.emit("turnChange", { player, jsonplanets });
+    }
 });
 
 function pageUpdate(planets) {
@@ -349,5 +353,9 @@ function pageUpdate(planets) {
             document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_red.png"
         }
     }
-
 }
+
+socket.on("waitbox", () => {
+    document.getElementById('waitbox').style.display = "block";
+    document.getElementById("infotext").innerHTML = "You are: "+colour;
+});

@@ -276,6 +276,7 @@ io.sockets.on('connection', (socket) => {
                 let Jsonplanets = JSON.stringify(planetsArray);
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
                 SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
+                SOCKET_LIST[1].emit("waitbox");
             }
         })
     }
