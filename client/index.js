@@ -70,6 +70,7 @@ let defender = ""
 let howmanyruns = 0
 
 let ran = 0;
+let clicks = -1;
 
 //checks if plantes have been clicked and lists their neigbors 
 function clicked(planet, neighbours) {
@@ -82,9 +83,10 @@ function clicked(planet, neighbours) {
             document.getElementById('troopnumber').max = player.troops;
             document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
             document.getElementById('troopnumContainer').style.display = "block";
+            clicks++;
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            if (ran == 0) {
+            if (ran == clicks) {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 player.troops -= placedTroops;
                 let planetFind = planets.find(item => item.planet == planet);
@@ -93,11 +95,12 @@ function clicked(planet, neighbours) {
                 document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
                 document.getElementById('troopnumContainer').style.display = "none";
                 document.getElementById('troopnumber').value = "";
-                ran = 1;
             }
+            ran++;
         });
-        document.getElementById('cancel').addEventListener("click", () => { document.getElementById('troopnumContainer').style.display = "none"; });
     }
+
+    document.getElementById('cancel').addEventListener("click", () => { document.getElementById('troopnumContainer').style.display = "none"; });
 
     if (turn == "attack") {
 
