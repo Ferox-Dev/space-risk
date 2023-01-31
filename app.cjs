@@ -294,13 +294,11 @@ io.sockets.on('connection', (socket) => {
                 if (turn == "placeTroops") {
                     turn = "attack";
                 } else if (turn == "attack") {
-                    turn = "moveTroops";
-                } else if (turn == "moveTroops") {
                     turn = "placeTroops";
+                    planetsArray = JSON.parse(data.jsonplanets);
+                    Jsonplanets = JSON.stringify(planetsArray);
+                    SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
                 }
-                planetsArray = JSON.parse(data.jsonplanets);
-                Jsonplanets = JSON.stringify(planetsArray);
-                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
             }
         }
     })

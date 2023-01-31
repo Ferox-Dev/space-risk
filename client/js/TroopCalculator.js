@@ -1,11 +1,13 @@
-export default function troopCalculate(player, planets, systemValues, systemTroops) {
+export default function troopCalculate(player, planets, colour) {
    
+    let planetsClaimed = 0;
 
-    for(let i = 0; i < systemValues.length; i++) {
-        systemTroops += systemValues[i];
+    for(let i = 0; i < planets.length; i++) {
+        if(planets[i].claimed == colour)
+        planetsClaimed++;
     }
     
-    player.troops += ((Math.floor(planets/3))+systemTroops+3);
+    player.troops += ((Math.floor(planetsClaimed/3))+3);
     return player.troops;
 }
 
