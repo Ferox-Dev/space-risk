@@ -18,6 +18,7 @@ socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
     colour = playerColour;
     console.log(player);
+    console.log("You are "+colour);
 });
 
 socket.on("readyButton", () => {
