@@ -317,7 +317,13 @@ io.sockets.on('connection', (socket) => {
         socket.emit("planetsearched", planetsArray);
     })
 
+    socket.once("troopbattle", (planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft) => {
+        planetslosing
+
+
+    })
 })
+
 
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`)
