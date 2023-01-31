@@ -35,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://107.191.50.159:4000/"
+        origin: "http://localhost:4000"
     }
 });
 
@@ -234,13 +234,17 @@ io.sockets.on('connection', (socket) => {
         socket.on('disconnect', () => {
             joined--;
             console.log(joined);
-            delete SOCKET_LIST[socket.id];
-            let idIndex = players.findIndex(item => item.id == socket.id)
-            delete players[idIndex].id;
+            // delete SOCKET_LIST[joined];
+            // let idIndex = players.findIndex(item => item.id == socket.id)
+            // delete players[idIndex].id;
         })
 
         if (joined == 2 && !gameisrunning) {
             io.emit("readyButton")
+        }
+
+        if(joined > 2 && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
+            socket.emit("screenHide");
         }
 
         socket.on("playerReady", (player) => {

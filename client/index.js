@@ -4,7 +4,7 @@ import colourLoad from './js/planetColourLoad.js';
 import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("localhost:4000")
 
 let player = {};
 let colour = "";
