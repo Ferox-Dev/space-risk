@@ -153,8 +153,8 @@ function clicked(planet, neighbours) {
             document.getElementById('troopnumber').max = player.troops;
             document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
             document.getElementById('troopnumContainer').style.display = "block";
-            clicks++;
         }
+        clicks++;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if(turn == "placeTroops") {
                 if (ran == clicks) {
