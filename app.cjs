@@ -35,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:4000"
+        origin: "http://107.191.50.159:4000/"
     }
 });
 
@@ -243,7 +243,7 @@ io.sockets.on('connection', (socket) => {
             io.emit("readyButton")
         }
 
-        if(joined > 2 && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
+        if (joined > 2 && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
             socket.emit("screenHide");
         }
 
@@ -293,7 +293,7 @@ io.sockets.on('connection', (socket) => {
                 if (turn == "placeTroops") {
                     turn = "attack";
                 } else if (turn == "attack") {
-                    turn == "moveTroops";
+                    turn = "moveTroops";
                 } else if (turn == "moveTroops") {
                     turn = "placeTroops";
                 }
