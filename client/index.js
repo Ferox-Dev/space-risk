@@ -192,11 +192,6 @@ function clicked(planet, neighbours) {
     }
 }
 
-{
-    if (attacker && defender) {
-
-    }
-}
 
 
 
