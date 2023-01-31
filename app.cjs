@@ -35,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://107.191.50.159:4000/"
+        origin: "http://localhost:4000"
     }
 });
 
@@ -275,21 +275,20 @@ io.sockets.on('connection', (socket) => {
                 }
                 let Jsonplanets = JSON.stringify(planetsArray);
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
-                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets, screen);
+                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
             }
         })
     }
 
-    socket.on("move", (data) => {
+    socket.on("turnChange", (data) => {
         if (gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
             if (socket == SOCKET_LIST[0]) {
                 players[0] = data.player;
-                screen = data.screen;
+                planetsArray = JSON.parse(data.jsonplanets);
                 Jsonplanets = JSON.stringify(planetsArray);
-                SOCKET_LIST[1].emit("turn", turn, players[1], Jsonplanets, screen);
+                SOCKET_LIST[1].emit("turn", turn, players[1], Jsonplanets);
             } else if (socket == SOCKET_LIST[1]) {
                 players[1] = data.player;
-                screen = data.screen;
                 if (turn == "placeTroops") {
                     turn = "attack";
                 } else if (turn == "attack") {
@@ -297,8 +296,9 @@ io.sockets.on('connection', (socket) => {
                 } else if (turn == "moveTroops") {
                     turn = "placeTroops";
                 }
+                planetsArray = JSON.parse(data.jsonplanets);
                 Jsonplanets = JSON.stringify(planetsArray);
-                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets, screen);
+                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
             }
         }
     })

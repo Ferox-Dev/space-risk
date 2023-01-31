@@ -4,7 +4,7 @@ import colourLoad from './js/planetColourLoad.js';
 import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("http://localhost:4000")
 
 let player = {};
 let colour = "";
@@ -69,7 +69,6 @@ let attacker = ""
 let defender = ""
 let howmanyruns = 0
 
-let planetClickTemp;
 let ran = 0;
 
 //checks if plantes have been clicked and lists their neigbors 
@@ -83,13 +82,12 @@ function clicked(planet, neighbours) {
             document.getElementById('troopnumber').max = player.troops;
             document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
             document.getElementById('troopnumContainer').style.display = "block";
-            planetClickTemp = planet;
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if(ran == 0) {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 player.troops -= placedTroops;
-                let planetFind = planets.find(item => item.planet == planetClickTemp);
+                let planetFind = planets.find(item => item.planet == planet);
                 planetFind.troopcount += placedTroops;
                 document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
                 document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
@@ -240,12 +238,12 @@ socket.on("planetColourAssign", (data) => {
     // console.log(planetsArray);
 });
 
-socket.on("turn", (gameturn, playerInfo, jsonPlanets, screenLoad) => {
+socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
     planets = JSON.parse(jsonPlanets);
     yourTurn = true;
     turn = gameturn;
     player = playerInfo;
-    document.getElementById("gameScreen").innerHTML = screenLoad;
+    pageUpdate(planets);
     if (turn == "placeTroops") {
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
@@ -258,6 +256,14 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets, screenLoad) => {
 document.getElementById('confirm').addEventListener("click", () => {
     document.getElementById("confirm").style.display = "none"
     yourTurn = false;
-    let screen = document.getElementById('gameScreen');
-    socket.emit("move", { player, screen });
+    let jsonplanets = JSON.stringify(planets);
+    socket.emit("turnChange", {player, jsonplanets});
 });
+
+function pageUpdate(planets) {
+
+    for(let i = 0; i < planets.length; i++) {
+        document.getElementById("troops_" + planets[i].planet).innerHTML = planets[i].troopcount;
+    }
+
+}
