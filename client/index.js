@@ -4,7 +4,7 @@ import colourLoad from './js/planetColourLoad.js';
 import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("localhost:4000")
+const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 let colour = "";
@@ -113,7 +113,8 @@ function clicked(planet, neighbours) {
                 if (yourTurn == true && colour == "blue") {
                     console.log(`Dev check planet type: ${result[0].claimed}`)
                     if (result[0].claimed == 'blue') {
-                        if (attacker) return console.log("already an attacker selected");
+                        if (attacker) return console.log("already an attacker selected"); /*/ Alert Box Messages? /*/
+                        if (result[0].troopcount <= 1) return console.log("planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
 
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
@@ -148,33 +149,41 @@ function clicked(planet, neighbours) {
                     }
                 } else if (yourTurn == true && colour == "red") {
                     if (result[0].claimed == 'red' /*/check if player is red/*/) {
+                        if (attacker) return console.log("already an attacker selected"); /*/ Alert Box Messages? /*/
+                        if (result[0].troopcount <= 1) return console.log("planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
+
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
+                                console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
-                                console.log("this planet is not a neighbor of the defeneder!")
+                                console.log(`this planet is not a neighbor of the ${defender}!`)
                             }
 
                         } else {
                             attacker = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
+                            console.log("on -> attacker -> blue -> no defender")
                         }
                     } else {
+                        if (defender) return console.log("already an defender selected");
+
                         if (attacker) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
+                                console.log("on -> defender -> blue -> negibor check attacker")
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
                         } else {
                             defender = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
+                            console.log("on -> defender -> blue -> no attacker")
                         }
                     }
                 }
-
                 console.log(`end check of: ${attacker} and ${defender}`)
                 console.log("-----------------------------------------")
             });
@@ -182,6 +191,14 @@ function clicked(planet, neighbours) {
         }
     }
 }
+
+{
+    if (attacker && defender) {
+
+    }
+}
+
+
 
 socket.on("planetColourAssign", (data) => {
     document.getElementById("startGame").style.display = "none";
