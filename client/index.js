@@ -122,7 +122,7 @@ function clicked(planet, neighbours) {
             }
             console.log("off")
             console.log(`end: ${attacker} and ${defender}`)
-            console.log("-----------------------------------------")
+            console.log("-----------------------------------------") /*/ add the attacker hide button /*/
             return;
         }
 
@@ -216,7 +216,7 @@ function clicked(planet, neighbours) {
                     }
                 }
                 console.log(`end check of: ${attacker} and ${defender}`)
-                console.log("-----------------------------------------")
+                console.log("-----------------------------------------") /*/ add the attacker button /*/
             });
             //This if tree is for setting attacker and defender based on the turn
         }
@@ -225,8 +225,33 @@ function clicked(planet, neighbours) {
 
 {
     if (!attacker || !defender) return console.log("You must have both an attacker and defender selected");
-    let troopschange
+    let troopschange = null
+    let planetslosing = null
+    let ammountoftroopsleft = null
+    let tielostplanet = null
+    let tieammountoftroopsleft = null
     troopschange = battle(attacker.troopcount, defender.troopcount)
+    if (troopschange == -2) {
+        planetslosing = attacker.planet
+        ammountoftroopsleft = attacker.troopcount - 2
+    } else if (troopschange == -1) {
+        planetslosing = attacker.planet
+        ammountoftroopsleft = attacker.troopcount - 1
+    } else if (troopschange == 0) {
+        planetslosing = attacker.planet
+        ammountoftroopsleft = attacker.troopcount - 1
+        tielostplanet = defender.planet
+        tieammountoftroopsleft = defender.planet - 1
+    } else if (troopschange == 1) {
+        planetslosing = defender.planet
+        ammountoftroopsleft = defender.troopcount - 1
+    } else if (troopschange == 2) {
+        planetslosing = defender.planet
+        ammountoftroopsleft = defender.troopcount - 2
+    }
+    attacker = ""
+    defender = ""
+    socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
 }
 
 
