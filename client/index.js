@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://localhost:4000")
+const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 let colour = "";
@@ -122,19 +122,16 @@ document.getElementById('battlebutton').addEventListener("click", () => {
                 document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
                 document.getElementById('troopnumContainer').style.display = "none";
                 socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
-                
+
                 document.getElementById('troopnumber').value = "";
             }
         })
 
     } else if (tielostplanet) {
-        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
-        document.getElementById("troops_"+tielostplanet.planet).innerHTML = tieammountoftroopsleft
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
     } else {
-        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
     }
@@ -156,7 +153,7 @@ function clicked(planet, neighbours) {
             clicks++;
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            if(turn == "placeTroops") {
+            if (turn == "placeTroops") {
                 if (ran == clicks) {
                     let placedTroops = parseInt(document.getElementById('troopnumber').value);
                     player.troops -= placedTroops;
@@ -315,7 +312,7 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
     player = playerInfo;
     pageUpdate(planets);
     if (turn == "placeTroops") {
-        if(!startturn) {
+        if (!startturn) {
             player.troops = troopCalculate(player, planets, colour);
         }
         startturn = false;
@@ -336,7 +333,7 @@ function pageUpdate(planets) {
 
     for (let i = 0; i < planets.length; i++) {
         document.getElementById("troops_" + planets[i].planet).innerHTML = planets[i].troopcount;
-        if(planets[i].claimed == "blue") {
+        if (planets[i].claimed == "blue") {
             document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_blue.png"
         } else {
             document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_red.png"
