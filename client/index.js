@@ -3,7 +3,6 @@ import colourLoad from './js/planetColourLoad.js';
 
 import battle from './js/battlecalculation.js'
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
-let turnmode = "Battack"
 
 const socket = io("http://107.191.50.159:4000/")
 
@@ -74,16 +73,17 @@ function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
 
     socket.emit("clicked")
-    socket.on("planets", (JsonPlanets) => {
+    socket.once("planets", (JsonPlanets) => {
         let planetsArray = JSON.parse(JsonPlanets);
         drawLines(planet, neighbours, planetsArray);
     })
 
-    if (turn = "attack") {
+    if (turn == "attack") {
         console.log(`start: ${attacker} and ${defender}`)
         console.log(attacker)
         console.log(defender)
-        if (document.getElementById(planet).style.filter == "brightness(200%)") {
+        if (document.getElementById(planet).style.filter == "brightness(50%)") {
+            // unselects the planet
             if (yourTurn) {
                 if (planet == attacker.planet) { attacker = "" }
                 if (planet == defender.planet) { defender = "" }
@@ -92,11 +92,16 @@ function clicked(planet, neighbours) {
             console.log("off")
             console.log(`end: ${attacker} and ${defender}`)
             console.log("-----------------------------------------")
-        } else {
+            return;
+        }
+
+        if (document.getElementById(planet).style.filter == "brightness(100%)") {
             socket.emit("planetcolorcheck",)
 
-            socket.on("planetsearched", systemscombined => {
+            socket.once("planetsearched", systemscombined => {
+                // you cannot do anything if it is not your turn
                 if (yourTurn == false) { return; }
+                // takes the array that comes from systemscombined and looks for the planet that you clicked
                 let result = ""
                 result = systemscombined.filter(planetz => planetz.planet == planet);
 
@@ -104,6 +109,7 @@ function clicked(planet, neighbours) {
                 console.log(`First check of: ${attacker} and ${defender}`)
                 console.log(attacker)
                 console.log(defender)
+                //if you are blue it sets blue planets to attackers and red planets to defenders
                 if (yourTurn == true && colour == "blue") {
                     console.log(`Dev check planet type: ${result[0].claimed}`)
                     if (result[0].claimed == 'blue') {
@@ -112,7 +118,7 @@ function clicked(planet, neighbours) {
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
-                                document.getElementById(planet).style.filter = "brightness(200%)"
+                                document.getElementById(planet).style.filter = "brightness(50%)"
                                 console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
                                 console.log(`this planet is not a neighbor of the ${defender}!`)
@@ -120,7 +126,7 @@ function clicked(planet, neighbours) {
 
                         } else {
                             attacker = result[0]
-                            document.getElementById(planet).style.filter = "brightness(200%)"
+                            document.getElementById(planet).style.filter = "brightness(50%)"
                             console.log("on -> attacker -> blue -> no defender")
                         }
                     } else {
@@ -129,14 +135,14 @@ function clicked(planet, neighbours) {
                         if (attacker) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
-                                document.getElementById(planet).style.filter = "brightness(200%)"
+                                document.getElementById(planet).style.filter = "brightness(50%)"
                                 console.log("on -> defender -> blue -> negibor check attacker")
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
                         } else {
                             defender = result[0]
-                            document.getElementById(planet).style.filter = "brightness(200%)"
+                            document.getElementById(planet).style.filter = "brightness(50%)"
                             console.log("on -> defender -> blue -> no attacker")
                         }
                     }
@@ -145,26 +151,26 @@ function clicked(planet, neighbours) {
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
-                                document.getElementById(planet).style.filter = "brightness(200%)"
+                                document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
 
                         } else {
                             attacker = result[0]
-                            document.getElementById(planet).style.filter = "brightness(200%)"
+                            document.getElementById(planet).style.filter = "brightness(50%)"
                         }
                     } else {
                         if (attacker) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
-                                document.getElementById(planet).style.filter = "brightness(200%)"
+                                document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
                         } else {
                             defender = result[0]
-                            document.getElementById(planet).style.filter = "brightness(200%)"
+                            document.getElementById(planet).style.filter = "brightness(50%)"
                         }
                     }
                 }
