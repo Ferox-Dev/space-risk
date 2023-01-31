@@ -156,7 +156,7 @@ function clicked(planet, neighbours) {
             clicks++;
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            if(turn == "placetroops") {
+            if(turn == "placeTroops") {
                 if (ran == clicks) {
                     let placedTroops = parseInt(document.getElementById('troopnumber').value);
                     player.troops -= placedTroops;
