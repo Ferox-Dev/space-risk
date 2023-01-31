@@ -85,20 +85,25 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     let tieammountoftroopsleft = null
     troopschange = battle(attacker.troopcount, defender.troopcount)
     if (troopschange == -2) {
+        console.log("lose 2")
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 2
     } else if (troopschange == -1) {
+        console.log("lose 1")
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
     } else if (troopschange == 0) {
+        console.log("lose tie")
         planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
         tielostplanet = defender
         tieammountoftroopsleft = defender.planet - 1
     } else if (troopschange == 1) {
+        console.log("lose -1")
         planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 1
     } else if (troopschange == 2) {
+        console.log("lose -2")
         planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 2
     }
