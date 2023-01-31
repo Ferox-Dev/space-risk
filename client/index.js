@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("http://localhost:4000")
 
 let player = {};
 let colour = "";
@@ -160,17 +160,19 @@ function clicked(planet, neighbours) {
         clicks++;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if (turn == "placeTroops") {
-                if (ran == clicks) {
-                    let placedTroops = parseInt(document.getElementById('troopnumber').value);
-                    player.troops -= placedTroops;
-                    let planetFind = planets.find(item => item.planet == planet);
-                    planetFind.troopcount += placedTroops;
-                    document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
-                    document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
-                    document.getElementById('troopnumContainer').style.display = "none";
-                    document.getElementById('troopnumber').value = "";
+                if(document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
+                    if (ran == clicks) {
+                        let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                        player.troops -= placedTroops;
+                        let planetFind = planets.find(item => item.planet == planet);
+                        planetFind.troopcount += placedTroops;
+                        document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
+                        document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
+                        document.getElementById('troopnumContainer').style.display = "none";
+                        document.getElementById('troopnumber').value = "";
+                    }
+                    ran++;
                 }
-                ran++;
             }
         });
     }
