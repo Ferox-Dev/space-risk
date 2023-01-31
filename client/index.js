@@ -133,6 +133,7 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         })
 
     } else if (tielostplanet) {
+        console.log(ammountoftroopsleft + " & " + tieammountoftroopsleft)
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
