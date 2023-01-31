@@ -266,14 +266,16 @@ io.sockets.on('connection', (socket) => {
                     if (i % 2 == 0) {
                         index.claimed = "blue";
                         index.troopcount = 1;
+                        players[0].troops--;
                     } else {
                         index.claimed = "red";
                         index.troopcount = 1;
+                        players[1].troops--;
                     }
                 }
-                let Jsonplanets = JSON.stringify(planetsArray)
+                let Jsonplanets = JSON.stringify(planetsArray);
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
-                SOCKET_LIST[0].emit("turn", turn);
+                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets, screen);
             }
         })
     }
@@ -281,8 +283,13 @@ io.sockets.on('connection', (socket) => {
     socket.on("move", (data) => {
         if (gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
             if (socket == SOCKET_LIST[0]) {
-                SOCKET_LIST[1].emit("turn", turn);
+                players[0] = data.player;
+                screen = data.screen;
+                Jsonplanets = JSON.stringify(planetsArray);
+                SOCKET_LIST[1].emit("turn", turn, players[1], Jsonplanets, screen);
             } else if (socket == SOCKET_LIST[1]) {
+                players[1] = data.player;
+                screen = data.screen;
                 if (turn == "placeTroops") {
                     turn = "attack";
                 } else if (turn == "attack") {
@@ -290,7 +297,8 @@ io.sockets.on('connection', (socket) => {
                 } else if (turn == "moveTroops") {
                     turn = "placeTroops";
                 }
-                SOCKET_LIST[0].emit("turn", turn);
+                Jsonplanets = JSON.stringify(planetsArray);
+                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets, screen);
             }
         }
     })
