@@ -72,6 +72,16 @@ body {
     background-color: white;
 }
 
+#battlebutton {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    background-color: white;
+    left: 700px;
+    top: 550px;
+    display: none;
+}
+
 
 
 
