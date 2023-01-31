@@ -25,12 +25,60 @@ body {
     position: absolute;
     margin-left: -100px;
     margin-top: -50px;
-    left: 50%;
-    top: 50%;
+    left: 80%;
+    top: 10%;
     width: 200px;
     height: 100px;
     display: none;
 }
+
+#troopnumContainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: -125px;
+    display: none;
+    width: 250px;
+    height: 100px;
+    background-color: white;
+}
+
+#troopnumber {
+    position: absolute;
+}
+
+#troopconfirm {
+    position: absolute;
+    width: 100px;
+    height: 25px;
+    bottom: 0%;
+}
+
+#cancel {
+    position: absolute;
+    width: 100px;
+    height: 25px;
+    bottom: 0%;
+    right: 0%;
+}
+
+#infobox {
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    right: 5%;
+    top: 5%;
+    background-color: white;
+}
+
+
+
+
+
+
+
+
 
 #troops_sun {
     position: absolute;

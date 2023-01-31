@@ -10,6 +10,7 @@ let player = {};
 let colour = "";
 let yourTurn = false;
 let turn = "";
+let planets = [];
 
 socket.on("connected", (playerColour, playerInfo) => {
     player = playerInfo;
@@ -68,17 +69,46 @@ let attacker = ""
 let defender = ""
 let howmanyruns = 0
 
+let planetClickTemp;
+let ran = 0;
+
 //checks if plantes have been clicked and lists their neigbors 
 function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
 
-    socket.emit("clicked")
-    socket.once("planets", (JsonPlanets) => {
-        let planetsArray = JSON.parse(JsonPlanets);
-        drawLines(planet, neighbours, planetsArray);
-    })
-
+    if(turn == "placeTroops" && yourTurn && player.troops > 0) {
+        let planetColour = planets.find(item => item.planet == planet);
+        if(planetColour.claimed == colour) {
+            ran = 0;
+            document.getElementById('troopnumber').max = player.troops;
+            document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
+            document.getElementById('troopnumContainer').style.display = "block";
+            planetClickTemp = planet;
+        }
+        document.getElementById('troopconfirm').addEventListener("click", () => {
+            if(ran == 0) {
+                let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                player.troops -= placedTroops;
+                let planetFind = planets.find(item => item.planet == planetClickTemp);
+                planetFind.troopcount += placedTroops;
+                document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
+                document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
+                document.getElementById('troopnumContainer').style.display = "none";
+                document.getElementById('troopnumber').value = "";
+                ran = 1;
+            }
+        });
+        document.getElementById('cancel').addEventListener("click", () => {document.getElementById('troopnumContainer').style.display = "none";});
+    }
+    
     if (turn == "attack") {
+
+        socket.emit("clicked")
+        socket.once("planets", (JsonPlanets) => {
+            let planetsArray = JSON.parse(JsonPlanets);
+            drawLines(planet, neighbours, planetsArray);
+        })
+
         console.log(`start: ${attacker} and ${defender}`)
         console.log(attacker)
         console.log(defender)
@@ -205,8 +235,12 @@ socket.on("planetColourAssign", (data) => {
     // console.log(planetsArray);
 });
 
-socket.on("turn", (turn) => {
+socket.on("turn", (gameturn, playerInfo, jsonPlanets, screenLoad) => {
+    planets = JSON.parse(jsonPlanets);
     yourTurn = true;
+    turn = gameturn;
+    player = playerInfo;
+    document.getElementById("gameScreen").innerHTML = screenLoad;
     if (turn == "placeTroops") {
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
@@ -219,5 +253,6 @@ socket.on("turn", (turn) => {
 document.getElementById('confirm').addEventListener("click", () => {
     document.getElementById("confirm").style.display = "none"
     yourTurn = false;
-    socket.emit("move", {});
+    let screen = document.getElementById('gameScreen');
+    socket.emit("move", { player, screen });
 });
