@@ -114,17 +114,13 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     if (planetslosing == defender && ammountoftroopsleft <= 0) {
 
         document.getElementById('troopnumContainer').style.display = "block";
-        document.getElementById(troopnumber).max = attacker.troopcount - 1;
+        document.getElementById("troopnumber").max = attacker.troopcount - 1;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if (turn == "attack") {
                 let planetswinning = attacker
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
-                planetFind = planets.find(item => item.planet == attacker.planet);
-                planetFind.troops = attacker.troopcount - placedTroops
                 document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
-                planetFind = planets.find(item => item.planet == defender.planet);
-                planetFind.troops = placedTroops;
                 document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
                 document.getElementById('troopnumContainer').style.display = "none";
                 socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
@@ -144,6 +140,10 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     }
     attacker = ""
     defender = ""
+    planetFind = planets.find(item => item.planet == attacker.planet);
+    planetFind.troops = attacker.troopcount - placedTroops
+    planetFind = planets.find(item => item.planet == defender.planet);
+    planetFind.troops = placedTroops;
 })
 
 //checks if plantes have been clicked and lists their neigbors 
@@ -155,20 +155,19 @@ function clicked(planet, neighbours) {
         if (planetColour.claimed == colour) {
             ran = 0;
             document.getElementById('troopnumber').max = player.troops;
-            document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
             document.getElementById('troopnumContainer').style.display = "block";
         }
         clicks++;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if (turn == "placeTroops") {
+                let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 if(document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
                     if (ran == clicks) {
-                        let placedTroops = parseInt(document.getElementById('troopnumber').value);
                         player.troops -= placedTroops;
                         let planetFind = planets.find(item => item.planet == planet);
                         planetFind.troopcount += placedTroops;
                         document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
-                        document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
+                        document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: "+turn+"<br>You are: "+colour;
                         document.getElementById('troopnumContainer').style.display = "none";
                         document.getElementById('troopnumber').value = "";
                     }
@@ -325,8 +324,10 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
             player.troops = troopCalculate(player, planets, colour);
         }
         startturn = false;
+        document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: "+turn+"<br>You are: "+colour;
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
+        document.getElementById("infotext").innerHTML = "turn: "+turn+"<br>You are: "+colour;
         document.getElementById("confirm").style.display = "block"
     }
 });
