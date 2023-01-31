@@ -84,26 +84,36 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     let tieammountoftroopsleft = null
     troopschange = battle(attacker.troopcount, defender.troopcount)
     if (troopschange == -2) {
-        planetslosing = attacker.planet
+        planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 2
     } else if (troopschange == -1) {
-        planetslosing = attacker.planet
+        planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
     } else if (troopschange == 0) {
-        planetslosing = attacker.planet
+        planetslosing = attacker
         ammountoftroopsleft = attacker.troopcount - 1
-        tielostplanet = defender.planet
+        tielostplanet = defender
         tieammountoftroopsleft = defender.planet - 1
     } else if (troopschange == 1) {
-        planetslosing = defender.planet
+        planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 1
     } else if (troopschange == 2) {
-        planetslosing = defender.planet
+        planetslosing = defender
         ammountoftroopsleft = defender.troopcount - 2
+    }
+    document.getElementById(attacker.planet).style.filter = "brightness(100%)"
+    document.getElementById(defender.planet).style.filter = "brightness(100%)"
+
+    if (planetslosing == defender.planet && ammountoftroopsleft <= 0) {
+        /*/ allow placement and colorshift of the defender /*/
+    } else if (tielostplanet) {
+        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
+        document.getElementById("troops_"+tielostplanet.planet).innerHTML = tieammountoftroopsleft
+    } else {
+        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
     }
     attacker = ""
     defender = ""
-    socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
 })
 
 //checks if plantes have been clicked and lists their neigbors 
