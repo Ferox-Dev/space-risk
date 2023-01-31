@@ -100,6 +100,9 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         planetslosing = defender.planet
         ammountoftroopsleft = defender.troopcount - 2
     }
+    document.getElementById(attacker.planet).style.filter = "brightness(100%)"
+    document.getElementById(defender.planet).style.filter = "brightness(100%)"
+
     attacker = ""
     defender = ""
     socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
