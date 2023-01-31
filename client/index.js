@@ -104,13 +104,31 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     document.getElementById(attacker.planet).style.filter = "brightness(100%)"
     document.getElementById(defender.planet).style.filter = "brightness(100%)"
 
-    if (planetslosing == defender.planet && ammountoftroopsleft <= 0) {
-        /*/ allow placement and colorshift of the defender /*/
+    if (planetslosing == defender && ammountoftroopsleft <= 0) {
+
+        document.getElementById('troopnumContainer').style.display = "block";
+        document.getElementById(troopnumber).max = attacker.troopcount - 1;
+        document.getElementById('troopconfirm').addEventListener("click", () => {
+            if (turn == "attack") {
+                let planetswinning = attacker
+                let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
+                document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
+                document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
+                document.getElementById('troopnumContainer').style.display = "none";
+                socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
+
+                document.getElementById('troopnumber').value = "";
+            }
+        })
+
     } else if (tielostplanet) {
-        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
-        document.getElementById("troops_"+tielostplanet.planet).innerHTML = tieammountoftroopsleft
+        document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
+        document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
+        socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
     } else {
-        document.getElementById("troops_"+planetslosing.planet).innerHTML = ammountoftroopsleft
+        document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
+        socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
     }
     attacker = ""
     defender = ""
@@ -130,17 +148,19 @@ function clicked(planet, neighbours) {
             clicks++;
         }
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            if (ran == clicks) {
-                let placedTroops = parseInt(document.getElementById('troopnumber').value);
-                player.troops -= placedTroops;
-                let planetFind = planets.find(item => item.planet == planet);
-                planetFind.troopcount += placedTroops;
-                document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
-                document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
-                document.getElementById('troopnumContainer').style.display = "none";
-                document.getElementById('troopnumber').value = "";
+            if (turn == "placeTroops") {
+                if (ran == clicks) {
+                    let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                    player.troops -= placedTroops;
+                    let planetFind = planets.find(item => item.planet == planet);
+                    planetFind.troopcount += placedTroops;
+                    document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
+                    document.getElementById("infotext").innerHTML = player.troops + " troops left to place"
+                    document.getElementById('troopnumContainer').style.display = "none";
+                    document.getElementById('troopnumber').value = "";
+                }
+                ran++;
             }
-            ran++;
         });
     }
 
@@ -307,7 +327,7 @@ function pageUpdate(planets) {
 
     for (let i = 0; i < planets.length; i++) {
         document.getElementById("troops_" + planets[i].planet).innerHTML = planets[i].troopcount;
-        if(planets[i].claimed == "blue") {
+        if (planets[i].claimed == "blue") {
             document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_blue.png"
         } else {
             document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_red.png"

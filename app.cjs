@@ -1,3 +1,5 @@
+import e from 'express';
+
 const express = require('express')
 const app = express();
 const serv = require('http').Server(app);
@@ -318,9 +320,25 @@ io.sockets.on('connection', (socket) => {
     })
 
     socket.once("troopbattle", (planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft) => {
-        planetslosing
+        let planettochange
+        if (tielostplanet) {
+            planettochange = planetsArray.find(item => item.planet == tielostplanet.planet)
+            planettochange.troopcount = tieammountoftroopsleft
+            planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
+            planettochange.troopcount = ammountoftroopsleft
+        } else {
+            planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
+            planettochange.troopcount = ammountoftroopsleft
+        }
+    })
 
-
+    socket.once("claiminganewplanet", (placedTroops, planetslosing, planetswinning) => {
+        let planettochange
+        planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
+        planettochange.claimed = planetswinning.claimed
+        planettochange.troopcount = placedTroops
+        planettochange = planetsArray.find(item => item.planet == planetswinning.planet)
+        planettochange.troopcount = planettochange.troopcount - placedTroops
     })
 })
 
