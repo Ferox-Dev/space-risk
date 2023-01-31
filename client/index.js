@@ -72,6 +72,11 @@ let howmanyruns = 0
 let ran = 0;
 let clicks = -1;
 
+document.getElementById('battlebutton').addEventListener("click", () => {
+    document.getElementById('battlebutton').style.display = "none";
+    //battle button clicked
+})
+
 //checks if plantes have been clicked and lists their neigbors 
 function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
@@ -122,6 +127,7 @@ function clicked(planet, neighbours) {
             }
             console.log("off")
             console.log(`end: ${attacker} and ${defender}`)
+            document.getElementById('battlebutton').style.display = "block";
             console.log("-----------------------------------------")
             return;
         }
@@ -216,6 +222,7 @@ function clicked(planet, neighbours) {
                     }
                 }
                 console.log(`end check of: ${attacker} and ${defender}`)
+                document.getElementById('battlebutton').style.display = "block";
                 console.log("-----------------------------------------")
             });
             //This if tree is for setting attacker and defender based on the turn
