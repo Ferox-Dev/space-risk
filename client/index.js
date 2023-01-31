@@ -74,7 +74,7 @@ let clicks = -1;
 
 document.getElementById('battlebutton').addEventListener("click", () => {
     document.getElementById('battlebutton').style.display = "none";
-
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     if (!attacker || !defender) return console.log("You must have both an attacker and defender selected");
     let troopschange = null
     let planetslosing = null
