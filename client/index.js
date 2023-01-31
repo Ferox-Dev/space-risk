@@ -2,6 +2,7 @@ import drawLines from './js/drawLines.js';
 import colourLoad from './js/planetColourLoad.js';
 
 import battle from './js/battlecalculation.js'
+import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
 const socket = io("http://localhost:4000")
@@ -276,6 +277,7 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
     player = playerInfo;
     pageUpdate(planets);
     if (turn == "placeTroops") {
+        // player.troops = troopCalculate(player, planets);
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
         document.getElementById("confirm").style.display = "block"
@@ -295,6 +297,11 @@ function pageUpdate(planets) {
 
     for (let i = 0; i < planets.length; i++) {
         document.getElementById("troops_" + planets[i].planet).innerHTML = planets[i].troopcount;
+        if(planets[i].claimed == "blue") {
+            document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_blue.png"
+        } else {
+            document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + "_red.png"
+        }
     }
 
 }
