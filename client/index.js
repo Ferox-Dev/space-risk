@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("http://localhost:4000/")
 
 let player = {};
 let colour = "";
@@ -81,6 +81,7 @@ let planetslosing
 let ammountoftroopsleft
 let tielostplanet
 let tieammountoftroopsleft
+let planetFind;
 
 document.getElementById('battlebutton').addEventListener("click", () => {
     document.getElementById('battlebutton').style.display = "none";
@@ -144,29 +145,28 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
 document.getElementById('troopconfirm').addEventListener("click", () => {
     if (turn == "attack") {
-        let placedTroops;
-        placedTroops = parseInt(document.getElementById('troopnumber').value);
-        console.log("placing of troops on claimed planet:")
-        console.log(attacker)
-        console.log(placedTroops)
-        console.log("--------------------------")
-        planetswinning = attacker
-        document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
-        document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
-        document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
-        document.getElementById('troopnumContainer').style.display = "none";
-        socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning, colour)
-
-        let planetFind;
-        planetFind = planets.find(item => item.planet == attacker.planet);
-        planetFind.troopcount = attacker.troopcount - placedTroops;
-        planetFind = planets.find(item => item.planet == defender.planet);
-        planetFind.troopcount = placedTroops;
-        planetFind.claimed = attacker.claimed;
-
-        attacker = ""
-        defender = ""
-        document.getElementById('troopnumber').value = "";
+        if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= attacker.troopcount) {
+            let placedTroops;
+            placedTroops = Math.floor(parseInt(document.getElementById('troopnumber').value));
+            console.log("placing of troops on claimed planet:")
+            console.log(attacker)
+            console.log(placedTroops)
+            console.log("--------------------------")
+            planetswinning = attacker
+            document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
+            document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
+            document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
+            document.getElementById('troopnumContainer').style.display = "none";
+            socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning, colour)
+            planetFind = planets.find(item => item.planet == attacker.planet);
+            planetFind.troopcount = attacker.troopcount - placedTroops;
+            planetFind = planets.find(item => item.planet == defender.planet);
+            planetFind.troopcount = placedTroops;
+            planetFind.claimed = attacker.claimed;
+            attacker = ""
+            defender = ""
+            document.getElementById('troopnumber').value = "";
+        }
     }
 })
 
@@ -182,7 +182,7 @@ function clicked(planet, neighbours) {
         clicks++;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if (turn == "placeTroops") {
-                let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                let placedTroops = Math.floor(parseInt(document.getElementById('troopnumber').value));
                 if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
                     if (ran == clicks) {
                         if (planetFind.claimed == colour) {
