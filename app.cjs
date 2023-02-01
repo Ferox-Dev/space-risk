@@ -237,7 +237,10 @@ io.sockets.on('connection', (socket) => {
         socket.on('disconnect', () => {
             joined--;
             console.log(joined);
-            // delete SOCKET_LIST[joined];
+            let socketFind = SOCKET_LIST.findIndex(item => item == socket.id);
+            SOCKET_LIST.slice(socketFind);
+            console.log(SOCKET_LIST[0]);
+            console.log(SOCKET_LIST[1]);
             // let idIndex = players.findIndex(item => item.id == socket.id)
             // delete players[idIndex].id;
         })
