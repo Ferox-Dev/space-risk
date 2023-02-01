@@ -133,11 +133,19 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+
+        planetFind = planets.find(item => item.planet == planetslosing.planet);
+        planetFind.troopcount = ammountoftroopsleft;
+        planetFind = planets.find(item => item.planet == tielostplanet.planet);
+        planetFind.troopcount = tieammountoftroopsleft;
         attacker = ""
         defender = ""
     } else {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+
+        planetFind = planets.find(item => item.planet == planetslosing.planet);
+        planetFind.troopcount = ammountoftroopsleft;
         attacker = ""
         defender = ""
     }
@@ -145,7 +153,7 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
 document.getElementById('troopconfirm').addEventListener("click", () => {
     if (turn == "attack") {
-        if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= attacker.troopcount) {
+        if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= attacker.troopcount - 1) {
             let placedTroops;
             placedTroops = Math.floor(parseInt(document.getElementById('troopnumber').value));
             console.log("placing of troops on claimed planet:")
@@ -189,7 +197,7 @@ function clicked(planet, neighbours) {
                             player.troops -= placedTroops;
                             planetFind.troopcount += placedTroops;
                             document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
-                            document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: " + turn + "<br>You are: " + colour;
+                            document.getElementById("infotext").innerHTML = player.troops + " troops left to place";
                             document.getElementById('troopnumContainer').style.display = "none";
                             document.getElementById('troopnumber').value = "";
                         }
@@ -204,11 +212,16 @@ function clicked(planet, neighbours) {
 
     if (turn == "attack") {
 
-        socket.emit("clicked")
-        socket.once("planets", (JsonPlanets) => {
-            let planetsArray = JSON.parse(JsonPlanets);
-            drawLines(planet, neighbours, planetsArray);
-        })
+        planetFind = planets.find(item => item.planet == planet)
+
+        if (planetFind.claimed == colour) {
+            socket.emit("clicked")
+            socket.once("planets", (JsonPlanets) => {
+                let planetsArray = JSON.parse(JsonPlanets);
+                drawLines(planet, neighbours, planetsArray);
+            })
+        }
+
         if (document.getElementById(planet).style.filter == "brightness(50%)") {
             // unselects the planet
             if (yourTurn) {
@@ -306,7 +319,6 @@ function clicked(planet, neighbours) {
     }
 }
 
-
 socket.on("planetColourAssign", (data) => {
     document.getElementById("startGame").style.display = "none";
     // console.log(data.shuffledPlanets);
@@ -322,16 +334,16 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
     yourTurn = true;
     turn = gameturn;
     player = playerInfo;
+    document.getElementById('turninfo').innerHTML = "Turn mode: " + turn;
     pageUpdate(planets);
     if (turn == "placeTroops") {
         if (!startturn) {
             player.troops = troopCalculate(player, planets, colour);
         }
         startturn = false;
-        document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: " + turn + "<br>You are: " + colour;
+        document.getElementById("infotext").innerHTML = player.troops + " troops left to place";
         document.getElementById("confirm").style.display = "block"
     } else if (turn == "attack") {
-        document.getElementById("infotext").innerHTML = "turn: " + turn + "<br>You are: " + colour;
         document.getElementById("confirm").style.display = "block"
     }
     document.getElementById('waitbox').style.display = "none";
@@ -339,6 +351,9 @@ socket.on("turn", (gameturn, playerInfo, jsonPlanets) => {
 
 document.getElementById('confirm').addEventListener("click", () => {
     if (player.troops == 0) {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('battlebutton').style.display = "none";
+        document.getElementById("infotext").innerHTML = "";
         document.getElementById("confirm").style.display = "none"
         document.getElementById('waitbox').style.display = "block";
         yourTurn = false;
@@ -346,6 +361,8 @@ document.getElementById('confirm').addEventListener("click", () => {
         socket.emit("turnChange", { player, jsonplanets });
         attacker = ""
         defender = ""
+    } else if (player.troops > 0) {
+        alert("You must place all your troops before you can end your turn");
     }
 });
 
@@ -363,15 +380,42 @@ function pageUpdate(planets) {
 
 socket.on("waitbox", () => {
     document.getElementById('waitbox').style.display = "block";
-    document.getElementById("infotext").innerHTML = "You are: " + colour;
 });
 
 socket.on("win", (winner) => {
-    document.getElementById('infobox').style.display = "block";
-    if (colour == winner) {
-        document.getElementById('infotext').innerHTML = "YOU WIN!!!"
+    document.getElementById('waitbox').style.display = "block";
+    if (winner == colour) {
+        document.getElementById('waittext').innerHTML = "YOU WIN!!!"
+    } else if (winner == "tie") {
+        document.getElementById('waittext').innerHTML = "It's a tie";
     } else {
-        document.getElementById('infotext').innerHTML = winner + " WINS!!!";
+        document.getElementById('waittext').innerHTML = winner + " wins";
     }
-
 })
+
+socket.on("setup", (turnnum) => {
+    document.getElementById("turnnum").innerHTML = "Turn: " + turnnum;
+    document.getElementById('colourinfo').innerHTML = "You are " + colour;
+})
+
+socket.on("turnChange", (turnnum) => {
+    document.getElementById("turnnum").innerHTML = "Turn: " + turnnum;
+})
+
+socket.on("restart", (jsonplanets) => {
+    planets = JSON.parse(jsonplanets);
+    yourTurn = false;
+    turn = "";
+    startturn = true;
+    player.troops = 40;
+    for (let i = 0; i < planets.length; i++) {
+        document.getElementById(planets[i].planet).src = "./images/planets/" + planets[i].planet + ".png"
+        document.getElementById("troops_" + planets[i].planet).innerHTML = 0;
+    }
+    document.getElementById("turnnum").innerHTML = "";
+    document.getElementById('colourinfo').innerHTML = "";
+    document.getElementById('turninfo').innerHTML = "";
+    document.getElementById('waitbox').style.display = "none";
+    document.getElementById('waittext').innerHTML = "Wait for the other player to end their turn";
+});
+

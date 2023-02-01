@@ -7,21 +7,17 @@ let gameisrunning = false;
 let ready = 0;
 let playerReady = "";
 let turn = "placeTroops";
-let colour = "blue";
 let gameTurn = 0;
-let gameFinished = false;
 let bluePlanets = 0;
 let redPlanets = 0;
 let winner = "";
 
 let players = [{
     id: "",
-    territories: 0,
     troops: 40
 },
 {
     id: "",
-    territories: 0,
     troops: 40
 }]
 
@@ -238,13 +234,16 @@ io.sockets.on('connection', (socket) => {
         socket.on('disconnect', () => {
             joined--;
             console.log(joined);
-            // delete SOCKET_LIST[joined];
+            let socketFind = SOCKET_LIST.findIndex(item => item == socket.id);
+            SOCKET_LIST.slice(socketFind);
+            console.log(SOCKET_LIST[0]);
+            console.log(SOCKET_LIST[1]);
             // let idIndex = players.findIndex(item => item.id == socket.id)
             // delete players[idIndex].id;
         })
 
         if (joined == 2 && !gameisrunning) {
-            io.emit("readyButton")
+            io.emit("readyButton");
         }
 
         if (joined > 2 && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
@@ -283,6 +282,8 @@ io.sockets.on('connection', (socket) => {
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
                 SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
                 SOCKET_LIST[1].emit("waitbox");
+                SOCKET_LIST[0].emit("setup", gameTurn);
+                SOCKET_LIST[1].emit("setup", gameTurn);
             }
         })
     }
@@ -304,6 +305,8 @@ io.sockets.on('connection', (socket) => {
                     turn = "placeTroops";
                     gameTurn++;
                     console.log("Turn: " + gameTurn);
+                    SOCKET_LIST[0].emit("turnChange", gameTurn);
+                    SOCKET_LIST[1].emit("turnChange", gameTurn);
                 }
                 if (gameTurn < 20) {
                     colour = "blue";
@@ -432,14 +435,40 @@ function pointCalc() {
 
     if (pointsreturnblue > pointsreturnred) {
         console.log("BLUE WIN")
+        winner = "blue";
     } else if (pointsreturnblue == pointsreturnred) {
         console.log("TIE")
-    } else (
+        winner = "tie";
+    } else {
+        winner = "red";
         console.log("Red WIN")
-    )
+    }
+    gameWin();
 }
 
 function gameWin() {
     console.log(winner + " wins");
-    socket.emit("win", winner);
+    SOCKET_LIST[0].emit("win", winner);
+    SOCKET_LIST[1].emit("win", winner);
+    setTimeout(restart, 10000);
+}
+
+function restart() {
+    planetsArray = system1.concat(system2, system3, system4, system5, system6);
+    gameTurn = 0;
+    gameisrunning = false;
+    ready = 0;
+    playerReady = "";
+    turn = "placeTroops";
+    bluePlanets = 0;
+    redPlanets = 0;
+    winner = "";
+    players[0].troops = 40;
+    players[1].troops = 40;
+    gameFinished = false;
+    let jsonplanets = JSON.stringify(planetsArray);
+    io.emit("restart", jsonplanets);
+    if (joined > 1) {
+        io.emit("readyButton")
+    }
 }
