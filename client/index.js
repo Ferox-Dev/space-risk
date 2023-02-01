@@ -419,3 +419,8 @@ socket.on("restart", (jsonplanets) => {
     document.getElementById('waittext').innerHTML = "Wait for the other player to end their turn";
 });
 
+socket.on("disconnectedrestart", () => {
+    document.getElementById('waitbox').style.display = "block";
+    document.getElementById('waittext').innerHTML = "Player has disconnected, game will now restart";
+});
+

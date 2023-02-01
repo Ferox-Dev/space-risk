@@ -240,6 +240,10 @@ io.sockets.on('connection', (socket) => {
             console.log(SOCKET_LIST[1]);
             // let idIndex = players.findIndex(item => item.id == socket.id)
             // delete players[idIndex].id;
+            if(gameisrunning && joined < 2) {
+                io.emit("disconnectedrestart")
+                setTimeout(restart, 5000);
+            }
         })
 
         if (joined == 2 && !gameisrunning) {
