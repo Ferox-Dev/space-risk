@@ -35,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:4000/"
+        origin: "http://107.191.50.159:4000/"
     }
 });
 let system1 = [
@@ -330,13 +330,13 @@ io.sockets.on('connection', (socket) => {
         }
     })
 
-    socket.on("claiminganewplanet", (placedTroops, planetslosing, planetswinning) => {
+    socket.on("claiminganewplanet", (placedTroops, planetslosing, planetswinning, playerscolour) => {
         console.log(placedTroops)
         console.log(planetslosing)
         console.log(planetswinning)
         let planettochange
         planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
-        planettochange.claimed = planetswinning.claimed
+        planettochange.claimed = playerscolour
         planettochange.troopcount = placedTroops
         planettochange = planetsArray.find(item => item.planet == planetswinning.planet)
         planettochange.troopcount = planettochange.troopcount - placedTroops
