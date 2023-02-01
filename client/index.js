@@ -142,10 +142,10 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
                 let planetFind;
                 planetFind = planets.find(item => item.planet == attacker.planet);
-                planetFind.troops = attacker.troopcount - placedTroops
-                planetFind.claimed = attacker.claimed;
+                planetFind.troopcount = attacker.troopcount - placedTroops;
                 planetFind = planets.find(item => item.planet == defender.planet);
-                planetFind.troops = placedTroops;
+                planetFind.troopcount = placedTroops;
+                planetFind.claimed = attacker.claimed;
 
                 attacker = ""
                 defender = ""
