@@ -124,21 +124,21 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
     if (planetslosing == defender && ammountoftroopsleft <= 0) {
 
-        document.getElementById('troopnumContainer').style.display = "block";
-        document.getElementById('troopnumber').max = attacker.troopcount - 1;
-        document.getElementById('troopnumber').min = 1;
-        document.getElementById('troopconfirm').addEventListener("click", () => {
+        document.getElementById('troopnumContainerB').style.display = "block";
+        document.getElementById('troopnumberB').max = attacker.troopcount - 1;
+        document.getElementById('troopnumberB').min = 1;
+        document.getElementById('troopconfirmB').addEventListener("click", () => {
             if (turn == "attack") {
-                placedTroops = parseInt(document.getElementById('troopnumber').value);
+                placedTroops = parseInt(document.getElementById('troopnumberB').value);
                 console.log(attacker)
                 console.log(placedTroops)
                 planetswinning = attacker
                 document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
                 document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
                 document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
-                document.getElementById('troopnumContainer').style.display = "none";
-                socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
-                document.getElementById('troopnumber').value = "";
+                document.getElementById('troopnumContainerB').style.display = "none";
+                socket.emit("claiminganewplanetB", placedTroops, planetslosing, planetswinning)
+                document.getElementById('troopnumberB').value = "";
 
                 let planetFind;
                 planetFind = planets.find(item => item.planet == attacker.planet);
@@ -165,6 +165,7 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         attacker = ""
         defender = ""
     }
+    document.getElementById('cancelB').addEventListener("click", () => { document.getElementById('troopnumContainerB').style.display = "none"; });
 })
 
 //checks if plantes have been clicked and lists their neigbors 
@@ -179,7 +180,7 @@ function clicked(planet, neighbours) {
             document.getElementById('troopnumContainer').style.display = "block";
         }
         clicks++;
-        document.getElementById('troopconfirm').addEventListener("click", () => {
+        document.getElementById('troopconfirmB').addEventListener("click", () => {
             if (turn == "placeTroops") {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {

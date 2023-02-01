@@ -63,6 +63,37 @@ body {
     right: 0%;
 }
 
+#troopnumContainerB {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: -125px;
+    display: none;
+    width: 250px;
+    height: 100px;
+    background-color: white;
+}
+
+#troopnumberB {
+    position: absolute;
+}
+
+#troopconfirmB {
+    position: absolute;
+    width: 100px;
+    height: 25px;
+    bottom: 0%;
+}
+
+#cancelB {
+    position: absolute;
+    width: 100px;
+    height: 25px;
+    bottom: 0%;
+    right: 0%;
+}
+
 #infobox {
     position: absolute;
     width: 200px;
