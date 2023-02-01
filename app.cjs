@@ -35,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://107.191.50.159:4000/"
+        origin: "http://localhost:4000/"
     }
 });
 

@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://107.191.50.159:4000/")
+const socket = io("http://localhost:4000/")
 
 let player = {};
 let colour = "";
@@ -119,25 +119,33 @@ document.getElementById('battlebutton').addEventListener("click", () => {
     console.log(ammountoftroopsleft)
     console.log(planetslosing == defender)
 
+    let placedTroops;
+    let planetswinning;
+
     if (planetslosing == defender && ammountoftroopsleft <= 0) {
 
         document.getElementById('troopnumContainer').style.display = "block";
         document.getElementById('troopnumber').max = attacker.troopcount - 1;
         document.getElementById('troopnumber').min = 1;
         document.getElementById('troopconfirm').addEventListener("click", () => {
-            let planetFind
             if (turn == "attack") {
-                let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                placedTroops = parseInt(document.getElementById('troopnumber').value);
                 console.log(attacker)
                 console.log(placedTroops)
-                let planetswinning = attacker
+                planetswinning = attacker
                 document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
                 document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
                 document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
                 document.getElementById('troopnumContainer').style.display = "none";
                 socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
-
                 document.getElementById('troopnumber').value = "";
+
+                let planetFind;
+                planetFind = planets.find(item => item.planet == attacker.planet);
+                planetFind.troops = attacker.troopcount - placedTroops
+                planetFind.claimed = attacker.claimed;
+                planetFind = planets.find(item => item.planet == defender.planet);
+                planetFind.troops = placedTroops;
 
                 attacker = ""
                 defender = ""
@@ -157,10 +165,6 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         attacker = ""
         defender = ""
     }
-    planetFind = planets.find(item => item.planet == attacker.planet);
-    planetFind.troops = attacker.troopcount - placedTroops
-    planetFind = planets.find(item => item.planet == defender.planet);
-    planetFind.troops = placedTroops;
 })
 
 //checks if plantes have been clicked and lists their neigbors 
