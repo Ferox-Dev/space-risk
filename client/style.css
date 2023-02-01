@@ -11,6 +11,7 @@ body {
 }
 
 #startGame {
+    font-size: 25px;
     position: absolute;
     margin-left: -100px;
     margin-top: -50px;
@@ -19,14 +20,16 @@ body {
     width: 200px;
     height: 100px;
     display: none;
+    outline: 5px solid black;
 }
 
 #confirm {
+    font-size: 25px;
     position: absolute;
     margin-left: -100px;
     margin-top: -50px;
-    left: 80%;
-    top: 10%;
+    left: 1475px;
+    top: 100px;
     width: 200px;
     height: 100px;
     display: none;
@@ -42,34 +45,71 @@ body {
     width: 250px;
     height: 100px;
     background-color: white;
+    outline: 5px solid black;
 }
 
 #troopnumber {
     position: absolute;
+    width: 50px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    margin-left: -30px;
+    margin-top: -15px;
 }
 
 #troopconfirm {
     position: absolute;
     width: 100px;
     height: 25px;
-    bottom: 0%;
+    top: 5px;
+    left: 50%;
+    margin-left: -50px;
 }
 
 #cancel {
     position: absolute;
     width: 100px;
     height: 25px;
-    bottom: 0%;
-    right: 0%;
+    bottom: 5px;
+    left: 50%;
+    margin-left: -50px;
 }
 
 #infobox {
     position: absolute;
     width: 200px;
-    height: 50px;
+    height: 100px;
+    margin-left: 5px;
+    margin-top: 5px;
     right: 0%;
     top: 0%;
     background-color: white;
+    outline: 5px solid black;
+}
+
+#colourinfo {
+    position: absolute;
+    top: 5px;
+    width: 200px;
+    text-align: center;
+    font-size: 25px;
+}
+
+#turninfo {
+    position: absolute;
+    top: 35px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
+}
+
+#infotext {
+    position: absolute;
+    top: 60px;
+    width: 200px;
+    text-align: center;
+    font-size: 20px;
 }
 
 #battlebutton {
@@ -80,6 +120,7 @@ body {
     left: 700px;
     top: 550px;
     display: none;
+    outline: 5px solid black;
 }
 
 #waitbox {
@@ -91,18 +132,35 @@ body {
     margin-left: -250px;
     margin-top: -125px;
     background-color: white;
+    outline: 5px solid black;
     display: none;
 }
 
 #waittext {
+    position: absolute;
     font-size: 50px;
-    align-items: center;
+    top: 50%;
+    margin-top: -50px;
+    text-align: center;
+    width: 500px;
+    
 }
 
+#turnbox {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    background-color: white;
+    outline: 5px solid black;
+    top: 5px;
+    left: 5px;
+}
 
-
-
-
+#turnnum {
+    font-size: 25px;
+    text-align: center;
+    margin: 5px;
+}
 
 
 
@@ -110,63 +168,90 @@ body {
     position: absolute;
     top: 175px;
     left: 256px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_venus {
     position: absolute;
-    top: 380px;
+    top: 375px;
     left: 225px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_earth {
     position: absolute;
     top: 280px;
     left: 85px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_saturn {
     position: absolute;
     top: 295px;
     left: 430px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_jupiter {
     position: absolute;
     top: 115px;
     left: 485px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-    
-    
-    
-    
+
 #troops_sunner {
     position: absolute;
     top: 215px;
-    left: 900px;
+    left: 895px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_penutt {
     position: absolute;
-    top: 355px;
-    left: 665px;
+    top: 340px;
+    left: 680px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_chese {
     position: absolute;
     top: 440px;
-    left: 950px;
+    left: 915px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_kyoob {
     position: absolute;
     top: 410px;
-    left: 795px;
+    left: 771px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_tulia {
     position: absolute;
-    top: 195px;
+    top: 210px;
     left: 675px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
     
@@ -175,25 +260,37 @@ body {
 #troops_banasun {
     position: absolute;
     top: 875px;
-    left: 440px;
+    left: 435px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_george {
     position: absolute;
     top: 795px;
-    left: 285px;
+    left: 275px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_lennie {
     position: absolute;
     top: 675px;
     left: 420px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_nrutas {
     position: absolute;
     top: 800px;
     left: 610px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
     
@@ -201,24 +298,36 @@ body {
     position: absolute;
     top: 865px;
     left: 880px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_haf {
     position: absolute;
     top: 895px;
     left: 1040px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_fotbal {
     position: absolute;
     top: 730px;
     left: 1090px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_apolle {
     position: absolute;
-    top: 760px;
-    left: 1250px;
+    top: 750px;
+    left: 1245px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
     
@@ -227,24 +336,36 @@ body {
     position: absolute;
     top: 405px;
     left: 1305px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_pairr {
     position: absolute;
     top: 200px;
     left: 1235px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_cooki {
     position: absolute;
     top: 270px;
     left: 1495px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_isars {
     position: absolute;
     top: 215px;
     left: 1670px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
     
@@ -254,22 +375,34 @@ body {
     position: absolute;
     top: 805px;
     left: 1690px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_eg {
     position: absolute;
     top: 710px;
     left: 1535px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_enolla {
     position: absolute;
     top: 595px;
     left: 1725px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
     
 #troops_vabos {
     position: absolute;
     top: 890px;
     left: 1520px;
+    font-size: 25px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }

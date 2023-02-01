@@ -8,8 +8,7 @@ let ready = 0;
 let playerReady = "";
 let turn = "placeTroops";
 let colour = "blue";
-let gameTurn = 18;
-let gameFinished = false;
+let gameTurn = 0;
 let bluePlanets = 0;
 let redPlanets = 0;
 let winner = "";
@@ -283,6 +282,8 @@ io.sockets.on('connection', (socket) => {
                 io.emit("planetColourAssign", { shuffledPlanets, Jsonplanets });
                 SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
                 SOCKET_LIST[1].emit("waitbox");
+                SOCKET_LIST[0].emit("setup", gameTurn);
+                SOCKET_LIST[1].emit("setup", gameTurn);
             }
         })
     }
@@ -304,6 +305,8 @@ io.sockets.on('connection', (socket) => {
                     turn = "placeTroops";
                     gameTurn++;
                     console.log("Turn: " + gameTurn);
+                    SOCKET_LIST[0].emit("turnChange", gameTurn);
+                    SOCKET_LIST[1].emit("turnChange", gameTurn);
                 }
                 if (gameTurn < 20) {
                     colour = "blue";

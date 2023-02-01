@@ -4,7 +4,7 @@ export default function drawLines(planet, neighbours, planetsArray) {
 
     let canvas = document.getElementById('canvas')
     let ctx = canvas.getContext('2d');
-
+    
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let planetFind = planetsArray.find(item => item.planet == planet)
 
