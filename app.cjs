@@ -9,6 +9,7 @@ let playerReady = "";
 let turn = "placeTroops";
 let colour = "blue";
 let gameTurn = 0;
+let gameFinished = false;
 
 let players = [{
     id: "",
@@ -298,10 +299,16 @@ io.sockets.on('connection', (socket) => {
                     gameTurn++;
                     console.log("Turn: "+gameTurn);
                 }
-                colour = "blue";
-                planetsArray = JSON.parse(data.jsonplanets);
-                Jsonplanets = JSON.stringify(planetsArray);
-                SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
+                if(gameTurn < 20) {
+                    colour = "blue";
+                    planetsArray = JSON.parse(data.jsonplanets);
+                    Jsonplanets = JSON.stringify(planetsArray);
+                    SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
+                } else {
+                    gameFinished = true;
+                    pointCalc();
+                }
+                
             }
         }
     })
@@ -355,3 +362,7 @@ io.sockets.on('connection', (socket) => {
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`)
 });
+
+function pointCalc() {
+
+}
