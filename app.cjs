@@ -6,8 +6,9 @@ let joined = 0;
 let gameisrunning = false;
 let ready = 0;
 let playerReady = "";
-let playerMove = "";
 let turn = "placeTroops";
+let colour = "blue";
+let gameTurn = 0;
 
 let players = [{
     id: "",
@@ -21,7 +22,6 @@ let players = [{
 }]
 
 let SOCKET_LIST = [];
-let PLAYER_LIST = [];
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/client/index.html');
@@ -284,6 +284,7 @@ io.sockets.on('connection', (socket) => {
     socket.on("turnChange", (data) => {
         if (gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
             if (socket == SOCKET_LIST[0]) {
+                colour = "red";
                 players[0] = data.player;
                 planetsArray = JSON.parse(data.jsonplanets);
                 Jsonplanets = JSON.stringify(planetsArray);
@@ -294,7 +295,10 @@ io.sockets.on('connection', (socket) => {
                     turn = "attack";
                 } else if (turn == "attack") {
                     turn = "placeTroops";
+                    gameTurn++;
+                    console.log("Turn: "+gameTurn);
                 }
+                colour = "blue";
                 planetsArray = JSON.parse(data.jsonplanets);
                 Jsonplanets = JSON.stringify(planetsArray);
                 SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
@@ -340,6 +344,10 @@ io.sockets.on('connection', (socket) => {
         planettochange.troopcount = placedTroops
         planettochange = planetsArray.find(item => item.planet == planetswinning.planet)
         planettochange.troopcount = planettochange.troopcount - placedTroops
+
+        let winCheck = planetsArray.find(item => item.claimed == oppositeColour);
+
+
     })
 })
 
