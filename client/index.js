@@ -414,5 +414,6 @@ socket.on("restart", (jsonplanets) => {
     document.getElementById('colourinfo').innerHTML = "";
     document.getElementById('turninfo').innerHTML = "";
     document.getElementById('waitbox').style.display = "none";
+    document.getElementById('waittext').innerHTML = "Wait for the other player to end their turn";
 }); 
 

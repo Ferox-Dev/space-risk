@@ -463,6 +463,8 @@ function restart() {
     bluePlanets = 0;
     redPlanets = 0;
     winner = "";
+    players[0].troops = 40;
+    players[1].troops = 40;
     gameFinished = false;
     let jsonplanets = JSON.stringify(planetsArray);
     io.emit("restart", jsonplanets);

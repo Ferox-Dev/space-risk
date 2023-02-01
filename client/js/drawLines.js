@@ -8,7 +8,6 @@ export default function drawLines(planet, neighbours, planetsArray) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let planetFind = planetsArray.find(item => item.planet == planet)
 
-    if (tempClick != planet) {
         let x1 = (document.getElementById(planet).width / 2) + (parseInt(document.getElementById(planet).style.left, 10));
         let y1 = (document.getElementById(planet).height / 2) + (parseInt(document.getElementById(planet).style.top, 10));
 
@@ -31,7 +30,4 @@ export default function drawLines(planet, neighbours, planetsArray) {
                 tempClick = planet;
             }
         }
-    } else {
-        tempClick = "";
-    }
 }
