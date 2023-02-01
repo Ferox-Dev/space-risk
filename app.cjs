@@ -10,6 +10,9 @@ let turn = "placeTroops";
 let colour = "blue";
 let gameTurn = 0;
 let gameFinished = false;
+let bluePlanets = 0;
+let redPlanets = 0;
+let winner = "";
 
 let players = [{
     id: "",
@@ -265,10 +268,12 @@ io.sockets.on('connection', (socket) => {
                     let index = planetsArray.find(item => item.planet == shuffledPlanets[i]);
 
                     if (i % 2 == 0) {
+                        bluePlanets++;
                         index.claimed = "blue";
                         index.troopcount = 1;
                         players[0].troops--;
                     } else {
+                        redPlanets++;
                         index.claimed = "red";
                         index.troopcount = 1;
                         players[1].troops--;
@@ -286,6 +291,7 @@ io.sockets.on('connection', (socket) => {
         if (gameisrunning && (SOCKET_LIST[0] == socket || SOCKET_LIST[1] == socket)) {
             if (socket == SOCKET_LIST[0]) {
                 colour = "red";
+                oppositeColour = "blue";
                 players[0] = data.player;
                 planetsArray = JSON.parse(data.jsonplanets);
                 Jsonplanets = JSON.stringify(planetsArray);
@@ -301,6 +307,7 @@ io.sockets.on('connection', (socket) => {
                 }
                 if(gameTurn < 20) {
                     colour = "blue";
+                    oppositeColour = "red";
                     planetsArray = JSON.parse(data.jsonplanets);
                     Jsonplanets = JSON.stringify(planetsArray);
                     SOCKET_LIST[0].emit("turn", turn, players[0], Jsonplanets);
@@ -352,9 +359,26 @@ io.sockets.on('connection', (socket) => {
         planettochange = planetsArray.find(item => item.planet == planetswinning.planet)
         planettochange.troopcount = planettochange.troopcount - placedTroops
 
-        let winCheck = planetsArray.find(item => item.claimed == oppositeColour);
+        if(playerscolour == "blue") {
+            bluePlanets++;
+            redPlanets--;
+        } else if(playerscolour == "red") {
+            redPlanets++;
+            bluePlanets--;
+        }
 
+        console.log(bluePlanets);
+        console.log(redPlanets);
 
+        if(bluePlanets == 26) {
+            gameFinished = true;
+            winner = "blue";
+            gameWin();
+        } else if(redPlanets == 26) {
+            gameFinished = true;
+            winner = "red";
+            gameWin();
+        }
     })
 })
 
@@ -365,4 +389,9 @@ io.on("connection", (socket) => {
 
 function pointCalc() {
 
+}
+
+function gameWin() {
+    console.log(winner+" wins");
+    socket.emit("win", winner);
 }

@@ -363,3 +363,13 @@ socket.on("waitbox", () => {
     document.getElementById('waitbox').style.display = "block";
     document.getElementById("infotext").innerHTML = "You are: " + colour;
 });
+
+socket.on("win", (winner) => {
+    document.getElementById('infobox').style.display = "block";
+    if(colour == winner) {
+        document.getElementById('infotext').innerHTML = "YOU WIN!!!"
+    } else {
+        document.getElementById('infotext').innerHTML = winner+" WINS!!!";
+    }
+    
+})
