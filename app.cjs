@@ -38,7 +38,6 @@ const io = require("socket.io")(serv, {
         origin: "http://localhost:4000/"
     }
 });
-
 let system1 = [
     {
         planet: "sun",
@@ -187,6 +186,7 @@ let system6 = [
     },
 ];
 
+
 let planetsArray = system1.concat(system2, system3, system4, system5, system6);
 
 function planetNameCollector(name) {
@@ -316,7 +316,8 @@ io.sockets.on('connection', (socket) => {
         socket.emit("planetsearched", planetsArray);
     })
 
-    socket.once("troopbattle", (planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft) => {
+    socket.on("troopbattle", (planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft) => {
+        console.log(planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
         let planettochange
         if (tielostplanet) {
             planettochange = planetsArray.find(item => item.planet == tielostplanet.planet)
@@ -329,7 +330,10 @@ io.sockets.on('connection', (socket) => {
         }
     })
 
-    socket.once("claiminganewplanet", (placedTroops, planetslosing, planetswinning) => {
+    socket.on("claiminganewplanet", (placedTroops, planetslosing, planetswinning) => {
+        console.log(placedTroops)
+        console.log(planetslosing)
+        console.log(planetswinning)
         let planettochange
         planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
         planettochange.claimed = planetswinning.claimed
