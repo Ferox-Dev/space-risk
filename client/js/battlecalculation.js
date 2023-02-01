@@ -5,14 +5,17 @@ export default function battle(numberoftroopsattacker, numberoftroopsdefender) {
     let winner = 0;
 
     let battleammountattacker = numberoftroopsattacker - 1
-    if (numberoftroopsattacker <= 1) return null;
+    if (numberoftroopsattacker <= 1) return console.error("Battlecalc -> sub 1");
 
+    console.log(numberoftroopsattacker + " & " + numberoftroopsdefender)
 
-    if (numberoftroopsdefender === 1) {
+    if (numberoftroopsdefender == 1) {
+        console.log("NO TIE")
         whitedice.push(diceroll());
-        if (battleammountattacker === 1) {
+
+        if (battleammountattacker == 1) {
             reddice.push(diceroll());
-        } else if (battleammountattacker === 2) {
+        } else if (battleammountattacker == 2) {
             reddice.push(diceroll());
             reddice.push(diceroll());
         } else if (battleammountattacker >= 3) {
@@ -28,15 +31,16 @@ export default function battle(numberoftroopsattacker, numberoftroopsdefender) {
         reddice.reverse();
 
         if (whitedice[0] >= reddice[0]) {
-            winner--
+            winner = -1
         } else {
-            winner++
+            winner = 1
         }
 
     } else if (numberoftroopsdefender >= 2) {
+        console.log("")
         whitedice.push(diceroll());
         whitedice.push(diceroll());
-        if (battleammountattacker === 1) {
+        if (battleammountattacker == 1) {
 
             reddice.push(diceroll());
             whitedice.sort(function (a, b) { return a - b });
@@ -51,7 +55,7 @@ export default function battle(numberoftroopsattacker, numberoftroopsdefender) {
                 winner++
             }
 
-        } else if (battleammountattacker === 2) {
+        } else if (battleammountattacker == 2) {
             reddice.push(diceroll());
             reddice.push(diceroll());
 

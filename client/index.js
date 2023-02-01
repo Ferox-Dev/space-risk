@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://localhost:4000")
+const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 let colour = "";
@@ -78,47 +78,59 @@ let clicks = -1;
 document.getElementById('battlebutton').addEventListener("click", () => {
     document.getElementById('battlebutton').style.display = "none";
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    console.log(attacker)
+    console.log(defender)
     if (!attacker || !defender) return console.log("You must have both an attacker and defender selected");
     let troopschange
     let planetslosing
     let ammountoftroopsleft
     let tielostplanet
     let tieammountoftroopsleft
-    troopschange = battle(attacker.troopcount, defender.troopcount)
+    console.log(document.getElementById("troops_" + attacker.planet).innerHTML)
+    console.log(document.getElementById("troops_" + defender.planet).innerHTML)
+
+    troopschange = battle(document.getElementById("troops_" + attacker.planet).innerHTML, document.getElementById("troops_" + defender.planet).innerHTML)
     if (troopschange == -2) {
         console.log("attacker  lose 2")
         planetslosing = attacker
-        ammountoftroopsleft = attacker.troopcount - 2
+        ammountoftroopsleft = document.getElementById("troops_" + attacker.planet).innerHTML - 2
     } else if (troopschange == -1) {
         console.log("attacker lose 1")
         planetslosing = attacker
-        ammountoftroopsleft = attacker.troopcount - 1
+        ammountoftroopsleft = document.getElementById("troops_" + attacker.planet).innerHTML - 1
     } else if (troopschange == 0) {
         console.log("lose tie")
         planetslosing = attacker
-        ammountoftroopsleft = attacker.troopcount - 1
+        ammountoftroopsleft = document.getElementById("troops_" + attacker.planet).innerHTML - 1
         tielostplanet = defender
-        tieammountoftroopsleft = defender.troopcount - 1
+        tieammountoftroopsleft = document.getElementById("troops_" + defender.planet).innerHTML - 1
     } else if (troopschange == 1) {
         console.log("defender lose -1")
         planetslosing = defender
-        ammountoftroopsleft = defender.troopcount - 1
+        ammountoftroopsleft = document.getElementById("troops_" + defender.planet).innerHTML - 1
     } else if (troopschange == 2) {
         console.log("defender lose -2")
         planetslosing = defender
-        ammountoftroopsleft = defender.troopcount - 2
+        ammountoftroopsleft = document.getElementById("troops_" + defender.planet).innerHTML - 2
     }
     document.getElementById(attacker.planet).style.filter = "brightness(100%)"
     document.getElementById(defender.planet).style.filter = "brightness(100%)"
 
+    console.log(ammountoftroopsleft)
+    console.log(planetslosing == defender)
+
     if (planetslosing == defender && ammountoftroopsleft <= 0) {
 
         document.getElementById('troopnumContainer').style.display = "block";
-        document.getElementById(troopnumber).max = attacker.troopcount - 1;
+        document.getElementById('troopnumber').max = attacker.troopcount - 1;
+        document.getElementById('troopnumber').min = 1;
         document.getElementById('troopconfirm').addEventListener("click", () => {
+            let planetFind
             if (turn == "attack") {
-                let planetswinning = attacker
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
+                console.log(attacker)
+                console.log(placedTroops)
+                let planetswinning = attacker
                 document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
                 planetFind = planets.find(item => item.planet == attacker.planet);
                 planetFind.troops = attacker.troopcount - placedTroops
@@ -130,6 +142,9 @@ document.getElementById('battlebutton').addEventListener("click", () => {
                 socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
 
                 document.getElementById('troopnumber').value = "";
+
+                attacker = ""
+                defender = ""
             }
         })
 
@@ -138,12 +153,14 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+        attacker = ""
+        defender = ""
     } else {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+        attacker = ""
+        defender = ""
     }
-    attacker = ""
-    defender = ""
 })
 
 //checks if plantes have been clicked and lists their neigbors 
@@ -161,7 +178,7 @@ function clicked(planet, neighbours) {
         clicks++;
         document.getElementById('troopconfirm').addEventListener("click", () => {
             if (turn == "placeTroops") {
-                if(document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
+                if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
                     if (ran == clicks) {
                         let placedTroops = parseInt(document.getElementById('troopnumber').value);
                         player.troops -= placedTroops;
@@ -216,9 +233,6 @@ function clicked(planet, neighbours) {
                 result = systemscombined.filter(planetz => planetz.planet == planet);
 
                 console.log(result)
-                console.log(`First check of: ${attacker} and ${defender}`)
-                console.log(attacker)
-                console.log(defender)
                 //if you are blue it sets blue planets to attackers and red planets to defenders
                 if (yourTurn == true && colour == "blue") {
                     console.log(`Dev check planet type: ${result[0].claimed}`)
@@ -230,7 +244,6 @@ function clicked(planet, neighbours) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
-                                console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
                                 console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
@@ -238,7 +251,6 @@ function clicked(planet, neighbours) {
                         } else {
                             attacker = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
-                            console.log("on -> attacker -> blue -> no defender")
                         }
                     } else {
                         if (defender) return console.log("already an defender selected");
@@ -247,14 +259,12 @@ function clicked(planet, neighbours) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
-                                console.log("on -> defender -> blue -> negibor check attacker") /*/ Alert Box Messages? /*/
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!")
                             }
                         } else {
                             defender = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
-                            console.log("on -> defender -> blue -> no attacker")
                         }
                     }
                 } else if (yourTurn == true && colour == "red") {
@@ -266,7 +276,6 @@ function clicked(planet, neighbours) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
-                                console.log("on -> attacker -> blue -> neighbor check defender")
                             } else {
                                 console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
@@ -274,7 +283,6 @@ function clicked(planet, neighbours) {
                         } else {
                             attacker = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
-                            console.log("on -> attacker -> blue -> no defender")
                         }
                     } else {
                         if (defender) return console.log("already an defender selected");
@@ -283,14 +291,12 @@ function clicked(planet, neighbours) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
-                                console.log("on -> defender -> blue -> negibor check attacker")
                             } else {
                                 console.log("this planet is not a neighbor of the defeneder!") /*/ Alert Box Messages? /*/
                             }
                         } else {
                             defender = result[0]
                             document.getElementById(planet).style.filter = "brightness(50%)"
-                            console.log("on -> defender -> blue -> no attacker")
                         }
                     }
                 }
