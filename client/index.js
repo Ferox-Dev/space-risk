@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://localhost:4000/")
+const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 let colour = "";
@@ -344,6 +344,8 @@ document.getElementById('confirm').addEventListener("click", () => {
         yourTurn = false;
         let jsonplanets = JSON.stringify(planets);
         socket.emit("turnChange", { player, jsonplanets });
+        attacker = ""
+        defender = ""
     }
 });
 
@@ -366,10 +368,10 @@ socket.on("waitbox", () => {
 
 socket.on("win", (winner) => {
     document.getElementById('infobox').style.display = "block";
-    if(colour == winner) {
+    if (colour == winner) {
         document.getElementById('infotext').innerHTML = "YOU WIN!!!"
     } else {
-        document.getElementById('infotext').innerHTML = winner+" WINS!!!";
+        document.getElementById('infotext').innerHTML = winner + " WINS!!!";
     }
-    
+
 })

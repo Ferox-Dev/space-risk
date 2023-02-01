@@ -39,7 +39,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:4000/"
+        origin: "http://107.191.50.159:4000/"
     }
 });
 let system1 = [
@@ -365,10 +365,10 @@ io.sockets.on('connection', (socket) => {
         planettochange = planetsArray.find(item => item.planet == planetswinning.planet)
         planettochange.troopcount = planettochange.troopcount - placedTroops
 
-        if(playerscolour == "blue") {
+        if (playerscolour == "blue") {
             bluePlanets++;
             redPlanets--;
-        } else if(playerscolour == "red") {
+        } else if (playerscolour == "red") {
             redPlanets++;
             bluePlanets--;
         }
@@ -376,11 +376,11 @@ io.sockets.on('connection', (socket) => {
         console.log(bluePlanets);
         console.log(redPlanets);
 
-        if(bluePlanets == 26) {
+        if (bluePlanets == 26) {
             gameFinished = true;
             winner = "blue";
             gameWin();
-        } else if(redPlanets == 26) {
+        } else if (redPlanets == 26) {
             gameFinished = true;
             winner = "red";
             gameWin();
@@ -440,6 +440,6 @@ function pointCalc() {
 }
 
 function gameWin() {
-    console.log(winner+" wins");
+    console.log(winner + " wins");
     socket.emit("win", winner);
 }
