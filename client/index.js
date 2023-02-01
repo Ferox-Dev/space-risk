@@ -399,3 +399,20 @@ socket.on("setup", (turnnum) => {
 socket.on("turnChange", (turnnum) => {
     document.getElementById("turnnum").innerHTML = "Turn: "+turnnum;
 })
+
+socket.on("restart", (jsonplanets) => {
+    planets = JSON.parse(jsonplanets);
+    yourTurn = false;
+    turn = "";
+    startturn = true;
+    player.troops = 40;
+    for(let i = 0; i < planets.length; i++) {
+        document.getElementById(planets[i].planet).src = "./images/planets/"+planets[i].planet+".png"
+        document.getElementById("troops_"+planets[i].planet).innerHTML = 0;
+    }
+    document.getElementById("turnnum").innerHTML = "";
+    document.getElementById('colourinfo').innerHTML = "";
+    document.getElementById('turninfo').innerHTML = "";
+    document.getElementById('waitbox').style.display = "none";
+}); 
+

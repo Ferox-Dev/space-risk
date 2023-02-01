@@ -7,20 +7,17 @@ let gameisrunning = false;
 let ready = 0;
 let playerReady = "";
 let turn = "placeTroops";
-let colour = "blue";
-let gameTurn = 0;
+let gameTurn = 19;
 let bluePlanets = 0;
 let redPlanets = 0;
 let winner = "";
 
 let players = [{
     id: "",
-    territories: 0,
     troops: 40
 },
 {
     id: "",
-    territories: 0,
     troops: 40
 }]
 
@@ -38,7 +35,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://lcoalhost:4000"
+        origin: "http://localhost:4000"
     }
 });
 let system1 = [
@@ -246,7 +243,7 @@ io.sockets.on('connection', (socket) => {
         })
 
         if (joined == 2 && !gameisrunning) {
-            io.emit("readyButton")
+            io.emit("readyButton");
         }
 
         if (joined > 2 && (SOCKET_LIST[0] != socket || SOCKET_LIST[1] != socket)) {
@@ -446,12 +443,30 @@ function pointCalc() {
         winner = "red";
         console.log("Red WIN")
     }
-    SOCKET_LIST[0].emit("win", winner);
-    SOCKET_LIST[1].emit("win", winner);
+    gameWin();
 }
 
 function gameWin() {
     console.log(winner+" wins");
     SOCKET_LIST[0].emit("win", winner);
     SOCKET_LIST[1].emit("win", winner);
+    setTimeout(restart, 10000);
+}
+
+function restart() {
+    planetsArray = system1.concat(system2, system3, system4, system5, system6); 
+    gameTurn = 0;
+    gameisrunning = false;
+    ready = 0;
+    playerReady = "";
+    turn = "placeTroops";
+    bluePlanets = 0;
+    redPlanets = 0;
+    winner = "";
+    gameFinished = false;
+    let jsonplanets = JSON.stringify(planetsArray);
+    io.emit("restart", jsonplanets);
+    if(joined > 1) {
+        io.emit("readyButton")
+    }
 }
