@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://localhost:4000/")
+const socket = io("http://107.191.50.159:4000/")
 
 let player = {};
 let colour = "";
@@ -123,33 +123,6 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
     if (planetslosing == defender && ammountoftroopsleft <= 0) {
 
-        document.getElementById('troopnumContainer').style.display = "block";
-        document.getElementById('troopnumber').max = attacker.troopcount - 1;
-        document.getElementById('troopnumber').min = 1;
-        document.getElementById('troopconfirm').addEventListener("click", () => {
-            if (turn == "attack") {
-                placedTroops = parseInt(document.getElementById('troopnumber').value);
-                console.log(attacker)
-                console.log(placedTroops)
-                planetswinning = attacker
-                document.getElementById("troops_" + attacker.planet).innerHTML = attacker.troopcount - placedTroops
-                document.getElementById("troops_" + defender.planet).innerHTML = placedTroops
-                document.getElementById(defender.planet).src = "./images/planets/" + defender.planet + "_" + attacker.claimed + ".png"
-                document.getElementById('troopnumContainer').style.display = "none";
-                socket.emit("claiminganewplanet", placedTroops, planetslosing, planetswinning)
-                document.getElementById('troopnumber').value = "";
-
-                let planetFind;
-                planetFind = planets.find(item => item.planet == attacker.planet);
-                planetFind.troopcount = attacker.troopcount - placedTroops;
-                planetFind = planets.find(item => item.planet == defender.planet);
-                planetFind.troopcount = placedTroops;
-                planetFind.claimed = attacker.claimed;
-
-                attacker = ""
-                defender = ""
-            }
-        })
         document.getElementById('troopnumber').max = attacker.troopcount - 1;
         document.getElementById('troopnumber').min = 1;
         document.getElementById('troopnumContainer').style.display = "block";
@@ -212,7 +185,7 @@ function clicked(planet, neighbours) {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
                     if (ran == clicks) {
-                        if(planetFind.claimed == colour) {
+                        if (planetFind.claimed == colour) {
                             player.troops -= placedTroops;
                             planetFind.troopcount += placedTroops;
                             document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
