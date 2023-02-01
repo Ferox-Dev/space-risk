@@ -5,7 +5,7 @@ import battle from './js/battlecalculation.js'
 import troopCalculate from './js/TroopCalculator.js';
 // Turn modes: (BPlace -> RPlace -> Battack -> Rattack -> Bmove -> Rmove) move++ 
 
-const socket = io("http://localhost:4000/")
+const socket = io("http://localhost:4000")
 
 let player = {};
 let colour = "";
@@ -133,11 +133,19 @@ document.getElementById('battlebutton').addEventListener("click", () => {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         document.getElementById("troops_" + tielostplanet.planet).innerHTML = tieammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+
+        planetFind = planets.find(item => item.planet == planetslosing.planet);
+        planetFind.troopcount = ammountoftroopsleft;
+        planetFind = planets.find(item => item.planet == tielostplanet.planet);
+        planetFind.troopcount = tieammountoftroopsleft;
         attacker = ""
         defender = ""
     } else {
         document.getElementById("troops_" + planetslosing.planet).innerHTML = ammountoftroopsleft
         socket.emit("troopbattle", planetslosing, ammountoftroopsleft, tielostplanet, tieammountoftroopsleft)
+
+        planetFind = planets.find(item => item.planet == planetslosing.planet);
+        planetFind.troopcount = ammountoftroopsleft;
         attacker = ""
         defender = ""
     }
@@ -145,7 +153,7 @@ document.getElementById('battlebutton').addEventListener("click", () => {
 
 document.getElementById('troopconfirm').addEventListener("click", () => {
     if (turn == "attack") {
-        if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= attacker.troopcount) {
+        if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= attacker.troopcount-1) {
             let placedTroops;
             placedTroops = Math.floor(parseInt(document.getElementById('troopnumber').value));
             console.log("placing of troops on claimed planet:")
@@ -365,11 +373,13 @@ socket.on("waitbox", () => {
 });
 
 socket.on("win", (winner) => {
-    document.getElementById('infobox').style.display = "block";
-    if(colour == winner) {
-        document.getElementById('infotext').innerHTML = "YOU WIN!!!"
+    document.getElementById('waitbox').style.display = "block";
+    if(winner == colour) {
+        document.getElementById('waittext').innerHTML = "YOU WIN!!!"
+    } else if(winner == "tie"){
+        document.getElementById('waittext').innerHTML = "It's a tie";
     } else {
-        document.getElementById('infotext').innerHTML = winner+" WINS!!!";
+        document.getElementById('waittext').innerHTML = winner+" WINS!!!";
     }
     
 })

@@ -8,6 +8,7 @@ export default function troopCalculate(player, planets, colour) {
     }
     
     player.troops += ((Math.floor(planetsClaimed/3))+3);
+    if(colour == "blue") {player.troops++};
     return player.troops;
 }
 

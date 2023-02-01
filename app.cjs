@@ -8,7 +8,7 @@ let ready = 0;
 let playerReady = "";
 let turn = "placeTroops";
 let colour = "blue";
-let gameTurn = 0;
+let gameTurn = 18;
 let gameFinished = false;
 let bluePlanets = 0;
 let redPlanets = 0;
@@ -39,7 +39,7 @@ serv.listen(4000, () => {
 
 const io = require("socket.io")(serv, {
     cors: {
-        origin: "http://localhost:4000/"
+        origin: "http://lcoalhost:4000"
     }
 });
 let system1 = [
@@ -432,14 +432,20 @@ function pointCalc() {
 
     if (pointsreturnblue > pointsreturnred) {
         console.log("BLUE WIN")
+        winner = "blue";
     } else if (pointsreturnblue == pointsreturnred) {
         console.log("TIE")
-    } else (
+        winner = "tie";
+    } else {
+        winner = "red";
         console.log("Red WIN")
-    )
+    }
+    SOCKET_LIST[0].emit("win", winner);
+    SOCKET_LIST[1].emit("win", winner);
 }
 
 function gameWin() {
     console.log(winner+" wins");
-    socket.emit("win", winner);
+    SOCKET_LIST[0].emit("win", winner);
+    SOCKET_LIST[1].emit("win", winner);
 }
