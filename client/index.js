@@ -172,8 +172,8 @@ function clicked(planet, neighbours) {
     console.log(`start1ck: ${attacker} and ${defender}`)
 
     if (turn == "placeTroops" && yourTurn && player.troops > 0) {
-        let planetColour = planets.find(item => item.planet == planet);
-        if (planetColour.claimed == colour) {
+        let planetFind = planets.find(item => item.planet == planet);
+        if (planetFind.claimed == colour) {
             ran = 0;
             document.getElementById('troopnumber').max = player.troops;
             document.getElementById('troopnumContainer').style.display = "block";
@@ -184,13 +184,14 @@ function clicked(planet, neighbours) {
                 let placedTroops = parseInt(document.getElementById('troopnumber').value);
                 if (document.getElementById('troopnumber').value > 0 && document.getElementById('troopnumber').value <= player.troops) {
                     if (ran == clicks) {
-                        player.troops -= placedTroops;
-                        let planetFind = planets.find(item => item.planet == planet);
-                        planetFind.troopcount += placedTroops;
-                        document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
-                        document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: " + turn + "<br>You are: " + colour;
-                        document.getElementById('troopnumContainer').style.display = "none";
-                        document.getElementById('troopnumber').value = "";
+                        if(planetFind.claimed == colour) {
+                            player.troops -= placedTroops;
+                            planetFind.troopcount += placedTroops;
+                            document.getElementById("troops_" + planet).innerHTML = planetFind.troopcount;
+                            document.getElementById("infotext").innerHTML = player.troops + " troops left to place<br>turn: " + turn + "<br>You are: " + colour;
+                            document.getElementById('troopnumContainer').style.display = "none";
+                            document.getElementById('troopnumber').value = "";
+                        }
                     }
                     ran++;
                 }
