@@ -234,15 +234,15 @@ function clicked(planet, neighbours) {
                 //if you are blue it sets blue planets to attackers and red planets to defenders
                 if (yourTurn == true && colour == "blue") {
                     if (result[0].claimed == 'blue') {
-                        if (attacker) return console.log("already an attacker selected"); /*/ Alert Box Messages? /*/
-                        if (result[0].troopcount <= 1) return console.log("planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
+                        if (attacker) return alert("Already an attacker selected"); /*/ Alert Box Messages? /*/
+                        if (result[0].troopcount <= 1) return alert("Planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
 
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
-                                console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
+                                alert(`This planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
 
                         } else {
@@ -250,14 +250,14 @@ function clicked(planet, neighbours) {
                             document.getElementById(planet).style.filter = "brightness(50%)"
                         }
                     } else {
-                        if (defender) return console.log("already an defender selected");
+                        if (defender) return alert("Already an defender selected");
 
                         if (attacker) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
-                                console.log("this planet is not a neighbor of the defeneder!")
+                                alert(`this planet is not a neighbor of the ${attacker}!`)
                             }
                         } else {
                             defender = result[0]
@@ -266,15 +266,15 @@ function clicked(planet, neighbours) {
                     }
                 } else if (yourTurn == true && colour == "red") {
                     if (result[0].claimed == 'red' /*/check if player is red/*/) {
-                        if (attacker) return console.log("already an attacker selected"); /*/ Alert Box Messages? /*/
-                        if (result[0].troopcount <= 1) return console.log("planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
+                        if (attacker) return alert("Already an attacker selected"); /*/ Alert Box Messages? /*/
+                        if (result[0].troopcount <= 1) return alert("Planet has to have at least 2 troops to attack!") /*/ Alert Box Messages? /*/
 
                         if (defender) {
                             if (neighbours.includes(defender.planet)) {
                                 attacker = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
-                                console.log(`this planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
+                                alert(`This planet is not a neighbor of the ${defender}!`) /*/ Alert Box Messages? /*/
                             }
 
                         } else {
@@ -282,14 +282,14 @@ function clicked(planet, neighbours) {
                             document.getElementById(planet).style.filter = "brightness(50%)"
                         }
                     } else {
-                        if (defender) return console.log("already an defender selected");
+                        if (defender) return alert("Already an defender selected");
 
                         if (attacker) {
                             if (neighbours.includes(attacker.planet)) {
                                 defender = result[0]
                                 document.getElementById(planet).style.filter = "brightness(50%)"
                             } else {
-                                console.log("this planet is not a neighbor of the defeneder!") /*/ Alert Box Messages? /*/
+                                alert(`This planet is not a neighbor of the ${attacker}!`) /*/ Alert Box Messages? /*/
                             }
                         } else {
                             defender = result[0]

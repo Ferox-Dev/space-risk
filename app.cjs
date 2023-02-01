@@ -303,9 +303,9 @@ io.sockets.on('connection', (socket) => {
                 } else if (turn == "attack") {
                     turn = "placeTroops";
                     gameTurn++;
-                    console.log("Turn: "+gameTurn);
+                    console.log("Turn: " + gameTurn);
                 }
-                if(gameTurn < 20) {
+                if (gameTurn < 20) {
                     colour = "blue";
                     oppositeColour = "red";
                     planetsArray = JSON.parse(data.jsonplanets);
@@ -315,7 +315,7 @@ io.sockets.on('connection', (socket) => {
                     gameFinished = true;
                     pointCalc();
                 }
-                
+
             }
         }
     })
@@ -345,6 +345,12 @@ io.sockets.on('connection', (socket) => {
         } else {
             planettochange = planetsArray.find(item => item.planet == planetslosing.planet)
             planettochange.troopcount = ammountoftroopsleft
+
+            if (planettochange.claimed == "red") {
+                battleswonred++
+            } else {
+                battleswonblue++
+            }
         }
     })
 
@@ -387,8 +393,50 @@ io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`)
 });
 
-function pointCalc() {
+let pointsreturnred = 0
+let pointsreturnblue = 0
 
+let territoriesred = 0
+let armiesred = 0
+let battleswonred = 0
+let territoriesblue = 0
+let armiesblue = 0
+let battleswonblue = 0
+
+function pointCalc() {
+    // This function should only be called when the game is finished 
+    // has 4 values
+
+    planetsArray.forEach(element => {
+        if (element.planet == "red") {
+            territoriesred++
+
+            armiesred = armiesred + element.troopcount
+
+        } else {
+            territoriesblue++
+
+            armiesblue = armiesblue + element.troopcount
+        }
+
+
+    })
+
+    pointsreturnred = pointsreturnred + territoriesred;
+    pointsreturnred = pointsreturnred + armiesred / 10;
+    pointsreturnred = pointsreturnred + battleswonred / 3;
+
+    pointsreturnblue = pointsreturnblue + territoriesblue;
+    pointsreturnblue = pointsreturnblue + armiesblue / 10;
+    pointsreturnblue = pointsreturnblue + battleswonblue / 3;
+
+    if (pointsreturnblue > pointsreturnred) {
+        console.log("BLUE WIN")
+    } else if (pointsreturnblue == pointsreturnred) {
+        console.log("TIE")
+    } else (
+        console.log("Red WIN")
+    )
 }
 
 function gameWin() {
